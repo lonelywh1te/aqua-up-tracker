@@ -89,7 +89,7 @@ private val darkScheme = darkColorScheme(
 @Composable
 fun AquaUpTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -97,7 +97,7 @@ fun AquaUpTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-        darkTheme -> darkScheme
+        // darkTheme -> darkScheme
         else -> lightScheme
     }
 
