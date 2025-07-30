@@ -1,4 +1,4 @@
-package ru.lonelywh1te.aquaup.ui.theme
+package ru.lonelywh1te.aquaup.core.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

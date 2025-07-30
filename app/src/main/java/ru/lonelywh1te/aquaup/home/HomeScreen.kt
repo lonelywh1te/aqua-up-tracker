@@ -1,5 +1,6 @@
-package ru.lonelywh1te.aquaup
+package ru.lonelywh1te.aquaup.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,7 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.lonelywh1te.aquaup.ui.theme.AquaUpTheme
+import ru.lonelywh1te.aquaup.R
+import ru.lonelywh1te.aquaup.core.ui.theme.AquaUpTheme
 import kotlin.math.roundToInt
 
 // TODO: string / dimen res
@@ -42,7 +44,9 @@ fun HomeScreen(
     onAddWaterClick: () -> Unit,
 ) {
     Column (
-        modifier = modifier.padding(vertical = 16.dp),
+        modifier = modifier
+            .background(color = MaterialTheme.colorScheme.surfaceVariant)
+            .padding(vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
