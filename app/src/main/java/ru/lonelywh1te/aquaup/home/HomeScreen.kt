@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.lonelywh1te.aquaup.R
+import ru.lonelywh1te.aquaup.core.domain.VolumeUnit
 import ru.lonelywh1te.aquaup.core.ui.theme.AquaUpTheme
 import kotlin.math.roundToInt
 
@@ -36,12 +37,8 @@ import kotlin.math.roundToInt
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    waterGoal: Int,
-    currentWaterAmount: Int,
-    waterVolumes: List<Int>,
-    volumeUnit: String,
-    onWaterVolumeSelected: (volume: Int) -> Unit,
-    onAddWaterClick: () -> Unit,
+    state: HomeScreenState,
+    onEvent: (HomeScreenEvent) -> Unit
 ) {
     Column (
         modifier = modifier
@@ -52,24 +49,26 @@ fun HomeScreen(
     ) {
 
         HomeProgressOverview(
-            waterGoal = waterGoal,
-            volumeUnit = volumeUnit,
-            progressPercentage = ((currentWaterAmount.toFloat() / waterGoal) * 100).roundToInt()
+            waterGoal = state.waterGoal,
+            volumeUnit = state.volumeUnit.uiName,
+            progressPercentage = ((state.waterAmount.toFloat() / state.waterGoal) * 100).roundToInt()
         )
 
         HomeCurrentWaterProgress(
-            amount = currentWaterAmount,
-            volumeUnit = volumeUnit,
+            amount = state.waterAmount,
+            volumeUnit = state.volumeUnit.uiName,
             modifier = Modifier.weight(1f)
         )
 
         RecentWaterVolumes(
-            volumes = waterVolumes,
-            volumeUnit = volumeUnit,
-            onVolumeSelected = onWaterVolumeSelected
+            volumes = state.waterVolumes,
+            volumeUnit = state.volumeUnit.uiName,
+            onVolumeSelected = {
+                onEvent(HomeScreenEvent.AddWater(it))
+            }
         )
 
-        AddWaterButton(Modifier.padding(horizontal = 16.dp), onAddWaterClick = onAddWaterClick)
+        AddWaterButton(Modifier.padding(horizontal = 16.dp), onAddWaterClick = { /* TODO */})
     }
 }
 
@@ -179,12 +178,13 @@ private fun HomeScreenPreviewLight() {
         Scaffold { innerPadding ->
             HomeScreen(
                 modifier = Modifier.padding(innerPadding),
-                currentWaterAmount = 1000,
-                waterGoal = 1800,
-                waterVolumes = listOf(100, 200, 300, 400, 500, 900, 1000),
-                onAddWaterClick = {},
-                onWaterVolumeSelected = {},
-                volumeUnit = "мл"
+                state = HomeScreenState(
+                    1000,
+                    1200,
+                    listOf(1000, 1200),
+                    VolumeUnit.ML
+                ),
+                onEvent = {},
             )
         }
     }

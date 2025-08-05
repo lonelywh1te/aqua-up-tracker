@@ -26,6 +26,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.lonelywh1te.aquaup.R
+import ru.lonelywh1te.aquaup.core.domain.VolumeUnit
 import ru.lonelywh1te.aquaup.core.ui.AppSection
 import ru.lonelywh1te.aquaup.history.domain.HistoryData
 import ru.lonelywh1te.aquaup.core.ui.theme.AquaUpTheme
@@ -34,8 +35,7 @@ import java.time.LocalTime
 @Composable
 fun HistoryScreen(
     modifier: Modifier = Modifier,
-    historyDataList: List<HistoryData>,
-    volumeUnit: String,
+    state: HistoryScreenState,
     onEditHistoryDataClick: () -> Unit,
 ) {
     Column(
@@ -47,8 +47,8 @@ fun HistoryScreen(
     ) {
         AppSection(title = "История") {
             HistoryList(
-                volumeUnit = volumeUnit,
-                list = historyDataList,
+                volumeUnit = state.volumeUnit.uiName,
+                list = state.historyData,
                 onEditButtonClick = onEditHistoryDataClick
             )
         }
@@ -123,8 +123,7 @@ private fun HistoryScreenEmptyListPreview() {
         Scaffold { innerPadding ->
             HistoryScreen(
                 modifier = Modifier.padding(innerPadding),
-                historyDataList = emptyList(),
-                volumeUnit = "ml",
+                state = HistoryScreenState.getPreviewState().copy(historyData = listOf()),
                 onEditHistoryDataClick = {}
             )
         }
@@ -138,15 +137,7 @@ private fun HistoryScreenPreview() {
         Scaffold { innerPadding ->
             HistoryScreen(
                 modifier = Modifier.padding(innerPadding),
-                historyDataList = listOf(
-                    HistoryData(200, LocalTime.of(22, 0)),
-                    HistoryData(300, LocalTime.of(22, 0)),
-                    HistoryData(1100, LocalTime.of(22, 0)),
-                    HistoryData(100, LocalTime.of(22, 0)),
-                    HistoryData(200, LocalTime.of(22, 0)),
-                    HistoryData(300, LocalTime.of(22, 0)),
-                ),
-                volumeUnit = "ml",
+                state = HistoryScreenState.getPreviewState(),
                 onEditHistoryDataClick = {}
             )
         }
