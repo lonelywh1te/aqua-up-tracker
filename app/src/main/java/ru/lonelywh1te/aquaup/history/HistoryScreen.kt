@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,10 +27,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.lonelywh1te.aquaup.R
-import ru.lonelywh1te.aquaup.core.domain.VolumeUnit
-import ru.lonelywh1te.aquaup.core.ui.AppSection
-import ru.lonelywh1te.aquaup.history.domain.HistoryData
+import ru.lonelywh1te.aquaup.core.ui.components.AppSection
 import ru.lonelywh1te.aquaup.core.ui.theme.AquaUpTheme
+import ru.lonelywh1te.aquaup.history.domain.HistoryData
 import java.time.LocalTime
 
 @Composable

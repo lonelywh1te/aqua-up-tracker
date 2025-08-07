@@ -13,8 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.lonelywh1te.aquaup.R
-import ru.lonelywh1te.aquaup.core.ui.AppSection
-import ru.lonelywh1te.aquaup.core.ui.LabeledValueItem
+import ru.lonelywh1te.aquaup.core.ui.components.AppSection
+import ru.lonelywh1te.aquaup.core.ui.components.LabeledValueItem
 import ru.lonelywh1te.aquaup.core.ui.theme.AquaUpTheme
 
 @Composable

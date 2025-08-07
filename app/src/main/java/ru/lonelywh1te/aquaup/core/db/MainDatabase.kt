@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import ru.lonelywh1te.aquaup.core.db.converters.LocalDateTimeConverter
 import ru.lonelywh1te.aquaup.core.db.water_log.WaterLogDao
 import ru.lonelywh1te.aquaup.core.db.water_log.WaterLogEntity
 import java.time.LocalDateTime
@@ -14,7 +15,7 @@ import java.time.LocalDateTime
     version = 1,
     exportSchema = false
 )
-@TypeConverters(value = [LocalDateTime::class])
+@TypeConverters(value = [LocalDateTimeConverter::class])
 abstract class MainDatabase: RoomDatabase() {
 
     abstract fun waterLogDao(): WaterLogDao

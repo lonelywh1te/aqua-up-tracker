@@ -2,7 +2,6 @@ package ru.lonelywh1te.aquaup.history
 
 import ru.lonelywh1te.aquaup.core.domain.VolumeUnit
 import ru.lonelywh1te.aquaup.history.domain.HistoryData
-import ru.lonelywh1te.aquaup.home.HomeScreenState
 import java.time.LocalTime
 
 data class HistoryScreenState(
