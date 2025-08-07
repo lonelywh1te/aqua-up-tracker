@@ -22,6 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,8 +34,6 @@ import ru.lonelywh1te.aquaup.core.domain.VolumeUnit
 import ru.lonelywh1te.aquaup.core.ui.theme.AquaUpTheme
 import kotlin.math.roundToInt
 
-// TODO: string / dimen res
-
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -43,7 +43,7 @@ fun HomeScreen(
     Column (
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.surfaceVariant)
-            .padding(vertical = 16.dp),
+            .padding(vertical = dimensionResource(R.dimen.screen_padding)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -68,7 +68,7 @@ fun HomeScreen(
             }
         )
 
-        AddWaterButton(Modifier.padding(horizontal = 16.dp), onAddWaterClick = { /* TODO */})
+        AddWaterButton(Modifier.padding(horizontal = dimensionResource(R.dimen.base_spacing)), onAddWaterClick = { /* TODO */})
     }
 }
 
@@ -83,8 +83,14 @@ fun HomeProgressOverview(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Текущая цель: $waterGoal $volumeUnit", style = MaterialTheme.typography.bodyMedium)
-        Text(text = "Выполнено: $progressPercentage %", style = MaterialTheme.typography.bodyMedium)
+        Text(
+            text = stringResource(R.string.current_goal, waterGoal, volumeUnit),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Text(
+            text = stringResource(R.string.completed_percentage, progressPercentage),
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 }
 
@@ -99,9 +105,18 @@ fun HomeCurrentWaterProgress(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        Text(text = "Сегодня выпито", style = MaterialTheme.typography.bodyLarge)
-        Text(text = "$amount", style = MaterialTheme.typography.displayLarge.copy(fontSize = 96.sp, fontWeight = FontWeight.Medium))
-        Text(text = volumeUnit, style = MaterialTheme.typography.bodyLarge)
+        Text(
+            text = stringResource(R.string.already_been_drunk),
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Text(
+            text = "$amount",
+            style = MaterialTheme.typography.displayLarge.copy(fontSize = 96.sp, fontWeight = FontWeight.Medium)
+        )
+        Text(
+            text = volumeUnit,
+            style = MaterialTheme.typography.bodyLarge
+        )
     }
 }
 
@@ -140,9 +155,17 @@ fun WaterVolumeButton(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_water), contentDescription = null)
+            Icon(
+                imageVector = ImageVector.vectorResource(R.drawable.ic_water),
+                contentDescription = null
+            )
+
             Spacer(Modifier.height(2.dp))
-            Text("$volume $volumeUnit", style = MaterialTheme.typography.labelMedium)
+
+            Text(
+                text = "$volume $volumeUnit",
+                style = MaterialTheme.typography.labelMedium
+            )
         }
     }
 }
@@ -153,12 +176,19 @@ fun AddWaterButton(
     onAddWaterClick: () -> Unit
 ) {
     ElevatedButton(
-        modifier = modifier.fillMaxWidth().height(56.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(56.dp),
         onClick = onAddWaterClick,
     ) {
         Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_add), contentDescription = null)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(text = "Добавить воду", style = MaterialTheme.typography.titleMedium)
+
+        Spacer(modifier = Modifier.width(dimensionResource(R.dimen.small_spacing)))
+
+        Text(
+            text = stringResource(R.string.add_water),
+            style = MaterialTheme.typography.titleMedium
+        )
     }
 }
 
@@ -166,7 +196,7 @@ fun AddWaterButton(
 @Composable
 private fun WaterVolumePreview() {
     AquaUpTheme {
-        WaterVolumeButton(volume = 200, volumeUnit = "ml",) { }
+        WaterVolumeButton(volume = 200, volumeUnit = "ml") { }
     }
 }
 

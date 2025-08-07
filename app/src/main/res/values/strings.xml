@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">AquaUp</string>
+    <string name="main_settings">Основные настройки</string>
+    <string name="about">О приложении</string>
+    <string name="current_goal">Текущая цель: %1$d %2$s</string>
+    <string name="completed_percentage">Выполнено: %1$d %</string>
+    <string name="already_been_drunk">Сегодня выпито</string>
+    <string name="add_water">Добавить воду</string>
+    <string name="history">История</string>
+    <string name="empty_list">Список пуст</string>
+    <string name="home">Главная</string>
+    <string name="settings">Настройки</string>
 </resources>

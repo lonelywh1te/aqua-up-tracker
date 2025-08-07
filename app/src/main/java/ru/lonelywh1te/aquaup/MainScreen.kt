@@ -1,13 +1,10 @@
 package ru.lonelywh1te.aquaup
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -19,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import ru.lonelywh1te.aquaup.navigation.TabItem
 
@@ -45,7 +43,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     selected = index == selectedTabIndex,
                     onClick = { selectedTabIndex = index },
                     text = {
-                        Text(text = tabItem.title)
+                        Text(text = stringResource(tabItem.title))
                     },
                     icon = {
                         Icon(imageVector = ImageVector.vectorResource(tabItem.icon), contentDescription = null)

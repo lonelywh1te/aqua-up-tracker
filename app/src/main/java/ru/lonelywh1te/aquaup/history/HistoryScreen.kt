@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,11 +43,11 @@ fun HistoryScreen(
     Column(
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.surfaceVariant)
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = dimensionResource(R.dimen.screen_padding))
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        AppSection(title = "История") {
+        AppSection(title = stringResource(R.string.history)) {
             HistoryList(
                 volumeUnit = state.volumeUnit.uiName,
                 list = state.historyData,
@@ -53,7 +55,7 @@ fun HistoryScreen(
             )
         }
         
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(dimensionResource(R.dimen.base_spacing)))
     }
 }
 
@@ -66,7 +68,12 @@ fun HistoryList(
 ) {
     Column(modifier = modifier) {
         if (list.isEmpty()) {
-            Text(modifier = Modifier.padding(16.dp).fillMaxWidth(), text = "Список пуст")
+            Text(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                text = stringResource(R.string.empty_list)
+            )
         }
 
         list.forEachIndexed { index, historyData ->
@@ -91,11 +98,11 @@ fun HistoryItem(
     onEditButtonClick: () -> Unit
 ) {
     Row(
-        modifier = modifier.padding(vertical = 8.dp),
+        modifier = modifier.padding(vertical = dimensionResource(R.dimen.small_spacing)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            modifier = Modifier.padding(horizontal = 16.dp),
+            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.base_spacing)),
             imageVector = ImageVector.vectorResource(R.drawable.ic_water),
             contentDescription = null
         )

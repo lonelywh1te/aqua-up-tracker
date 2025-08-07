@@ -1,6 +1,7 @@
 package ru.lonelywh1te.aquaup.navigation
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import ru.lonelywh1te.aquaup.R
 import ru.lonelywh1te.aquaup.history.HistoryScreen
@@ -10,24 +11,24 @@ import ru.lonelywh1te.aquaup.home.HomeScreenState
 import ru.lonelywh1te.aquaup.settings.SettingsScreen
 
 sealed class TabItem(
-    val title: String,
+    @StringRes val title: Int,
     @DrawableRes val icon: Int,
-    val screen: @Composable () -> Unit
+    val screen: @Composable () -> Unit,
 ) {
     data object Home: TabItem(
-        title = "Главная",
+        title = R.string.home,
         icon = R.drawable.ic_home,
         screen = { HomeScreen(state = HomeScreenState.getPreviewState(), onEvent = {}) }
     )
 
     data object History: TabItem(
-        title = "История",
+        title = R.string.history,
         icon = R.drawable.ic_history,
         screen = { HistoryScreen(state = HistoryScreenState.getPreviewState(), onEditHistoryDataClick = {}) }
     )
 
     data object Settings: TabItem(
-        title = "Настройки",
+        title = R.string.settings,
         icon = R.drawable.ic_settings,
         screen = { SettingsScreen() }
     )

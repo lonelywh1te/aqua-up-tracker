@@ -9,8 +9,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.lonelywh1te.aquaup.R
 import ru.lonelywh1te.aquaup.core.ui.AppSection
 import ru.lonelywh1te.aquaup.core.ui.LabeledValueItem
 import ru.lonelywh1te.aquaup.core.ui.theme.AquaUpTheme
@@ -25,11 +27,11 @@ fun SettingsScreen(
             .padding(horizontal = 16.dp)
             .fillMaxSize()
     ) {
-        AppSection(title = "Основные настройки") {
+        AppSection(title = stringResource(R.string.main_settings)) {
             MainSettingsList()
         }
 
-        AppSection(title = "О приложении") {
+        AppSection(title = stringResource(R.string.about)) {
             AboutSettingsList()
         }
     }
