@@ -1,6 +1,6 @@
 package ru.lonelywh1te.aquaup.presentation.history
 
-import ru.lonelywh1te.aquaup.domain.VolumeUnit
+import ru.lonelywh1te.aquaup.domain.model.VolumeUnit
 import ru.lonelywh1te.aquaup.presentation.history.domain.HistoryData
 import java.time.LocalTime
 

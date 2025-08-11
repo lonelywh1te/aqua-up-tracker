@@ -16,7 +16,6 @@ import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 import ru.lonelywh1te.aquaup.presentation.history.HistoryScreen
 import ru.lonelywh1te.aquaup.presentation.history.HistoryScreenState
 import ru.lonelywh1te.aquaup.presentation.home.HomeScreen
-import ru.lonelywh1te.aquaup.presentation.home.HomeScreenState
 
 // TODO: volume unit
 
@@ -56,34 +55,6 @@ class MainActivity : ComponentActivity() {
                         .padding(top = innerPadding.calculateTopPadding())
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .padding(bottom = innerPadding.calculateBottomPadding())
-                )
-            }
-        }
-    }
-
-    @Preview(showBackground = true, showSystemUi = true)
-    @Composable
-    private fun HomeScreenPreview() {
-        AquaUpTheme {
-            Scaffold { innerPadding ->
-                HomeScreen(
-                    modifier = Modifier.padding(innerPadding),
-                    state = HomeScreenState.getPreviewState(),
-                    onEvent = {}
-                )
-            }
-        }
-    }
-
-    @Preview(showBackground = true, showSystemUi = true)
-    @Composable
-    private fun HistoryScreenPreview() {
-        AquaUpTheme {
-            Scaffold { innerPadding ->
-                HistoryScreen(
-                    modifier = Modifier.padding(innerPadding),
-                    state = HistoryScreenState.getPreviewState(),
-                    onEditHistoryDataClick = { /* TODO */ }
                 )
             }
         }

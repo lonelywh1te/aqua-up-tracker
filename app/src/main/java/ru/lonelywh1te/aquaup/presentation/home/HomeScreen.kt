@@ -34,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.lonelywh1te.aquaup.R
-import ru.lonelywh1te.aquaup.domain.VolumeUnit
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 import kotlin.math.roundToInt
@@ -42,7 +41,7 @@ import kotlin.math.roundToInt
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    state: HomeScreenState,
+    state: HomeScreenState.Success = HomeScreenState.Success.getPreviewState(),
     onEvent: (HomeScreenEvent) -> Unit
 ) {
     var isWaterInputDialogVisible by remember { mutableStateOf(false) }
@@ -68,7 +67,7 @@ fun HomeScreen(
         )
 
         RecentWaterVolumes(
-            volumes = state.waterVolumes,
+            volumes = state.recentWaterVolumes,
             volumeUnit = state.volumeUnit.uiName,
             onVolumeSelected = {
                 onEvent(HomeScreenEvent.AddWater(it))
@@ -231,12 +230,7 @@ private fun HomeScreenPreviewLight() {
         Scaffold { innerPadding ->
             HomeScreen(
                 modifier = Modifier.padding(innerPadding),
-                state = HomeScreenState(
-                    1000,
-                    1200,
-                    listOf(1000, 1200),
-                    VolumeUnit.ML
-                ),
+                state = HomeScreenState.Success.getPreviewState(),
                 onEvent = {},
             )
         }

@@ -1,4 +1,4 @@
-package ru.lonelywh1te.aquaup.domain
+package ru.lonelywh1te.aquaup.domain.model
 
 import java.time.LocalDateTime
 

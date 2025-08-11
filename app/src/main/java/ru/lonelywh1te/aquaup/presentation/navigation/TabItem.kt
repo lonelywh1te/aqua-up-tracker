@@ -18,7 +18,7 @@ sealed class TabItem(
     data object Home: TabItem(
         title = R.string.home,
         icon = R.drawable.ic_home,
-        screen = { HomeScreen(state = HomeScreenState.getPreviewState(), onEvent = {}) }
+        screen = { HomeScreen(state = HomeScreenState.Success.getPreviewState(), onEvent = {}) }
     )
 
     data object History: TabItem(
