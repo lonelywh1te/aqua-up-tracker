@@ -2,6 +2,7 @@ package ru.lonelywh1te.aquaup.presentation.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -13,12 +14,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,7 +36,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.koin.androidx.compose.koinViewModel
 import ru.lonelywh1te.aquaup.R
+import ru.lonelywh1te.aquaup.domain.model.VolumeUnit
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 import kotlin.math.roundToInt
@@ -41,34 +46,65 @@ import kotlin.math.roundToInt
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    state: HomeScreenState.Success = HomeScreenState.Success.getPreviewState(),
+    viewModel: HomeViewModel = koinViewModel()
+) {
+    val state by viewModel.state.collectAsState()
+
+    when (state) {
+        is HomeScreenState.Success -> {
+            val successState = state as HomeScreenState.Success
+
+            HomeContent(
+                modifier = modifier,
+                waterGoal = successState.waterGoal,
+                waterAmount = successState.waterAmount,
+                volumeUnit = successState.volumeUnit,
+                recentWaterVolumes = successState.recentWaterVolumes,
+                onEvent = viewModel::onEvent
+            )
+        }
+
+        is HomeScreenState.Loading -> HomeLoading(modifier)
+
+        is HomeScreenState.Error -> {
+            /* TODO */
+        }
+    }
+}
+
+@Composable
+fun HomeContent(
+    modifier: Modifier = Modifier,
+    waterGoal: Int,
+    volumeUnit: VolumeUnit,
+    waterAmount: Int,
+    recentWaterVolumes: List<Int>,
     onEvent: (HomeScreenEvent) -> Unit
 ) {
     var isWaterInputDialogVisible by remember { mutableStateOf(false) }
 
     Column (
         modifier = modifier
-            .background(color = MaterialTheme.colorScheme.surfaceVariant)
             .padding(vertical = dimensionResource(R.dimen.screen_padding)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
         HomeProgressOverview(
-            waterGoal = state.waterGoal,
-            volumeUnit = state.volumeUnit.uiName,
-            progressPercentage = ((state.waterAmount.toFloat() / state.waterGoal) * 100).roundToInt()
+            waterGoal = waterGoal,
+            volumeUnit = volumeUnit.uiName,
+            progressPercentage = if (waterGoal != 0) ((waterAmount.toFloat() / waterGoal) * 100).roundToInt() else 0
         )
 
         HomeCurrentWaterProgress(
-            amount = state.waterAmount,
-            volumeUnit = state.volumeUnit.uiName,
+            amount = waterAmount,
+            volumeUnit = volumeUnit.uiName,
             modifier = Modifier.weight(1f)
         )
 
         RecentWaterVolumes(
-            volumes = state.recentWaterVolumes,
-            volumeUnit = state.volumeUnit.uiName,
+            volumes = recentWaterVolumes,
+            volumeUnit = volumeUnit.uiName,
             onVolumeSelected = {
                 onEvent(HomeScreenEvent.AddWater(it))
             }
@@ -83,14 +119,22 @@ fun HomeScreen(
             NumberInputDialog(
                 title = stringResource(R.string.enter_volume),
                 onConfirm = { value ->
-
-                    /* TODO */
-
+                    onEvent(HomeScreenEvent.AddWater(value))
                     isWaterInputDialogVisible = false
                 },
                 onDismiss = { isWaterInputDialogVisible = false }
             )
         }
+    }
+}
+
+@Composable
+fun HomeLoading(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
     }
 }
 
@@ -229,9 +273,9 @@ private fun HomeScreenPreviewLight() {
     AquaUpTheme {
         Scaffold { innerPadding ->
             HomeScreen(
-                modifier = Modifier.padding(innerPadding),
-                state = HomeScreenState.Success.getPreviewState(),
-                onEvent = {},
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
             )
         }
     }

@@ -8,7 +8,9 @@ val presentationModule = module {
 
     viewModel<HomeViewModel> {
         HomeViewModel(
-            getTodayWaterLogsUseCase = get()
+            settingsPreferences = get(),
+            getTodayWaterLogsUseCase = get(),
+            addWaterUseCase = get(),
         )
     }
 

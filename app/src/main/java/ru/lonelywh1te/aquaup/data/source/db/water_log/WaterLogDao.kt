@@ -16,13 +16,13 @@ interface WaterLogDao {
     suspend fun getWaterLog(id: Long): WaterLogEntity?
 
     @Insert
-    suspend fun addWaterLog(waterLog: WaterLogEntity)
+    suspend fun addWaterLog(waterLogEntity: WaterLogEntity)
 
     @Delete
-    suspend fun deleteWaterLog(waterLog: WaterLogEntity)
+    suspend fun deleteWaterLog(waterLogEntity: WaterLogEntity)
 
     @Update
-    suspend fun updateWaterLog(waterLog: WaterLogEntity)
+    suspend fun updateWaterLog(waterLogEntity: WaterLogEntity)
 
     @Query("SELECT * FROM water_log WHERE timestamp BETWEEN :startDate AND :endDate")
     fun getWaterLogsForPeriod(startDate: LocalDateTime, endDate: LocalDateTime): Flow<List<WaterLogEntity>>

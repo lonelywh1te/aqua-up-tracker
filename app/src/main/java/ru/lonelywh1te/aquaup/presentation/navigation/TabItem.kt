@@ -7,7 +7,6 @@ import ru.lonelywh1te.aquaup.R
 import ru.lonelywh1te.aquaup.presentation.history.HistoryScreen
 import ru.lonelywh1te.aquaup.presentation.history.HistoryScreenState
 import ru.lonelywh1te.aquaup.presentation.home.HomeScreen
-import ru.lonelywh1te.aquaup.presentation.home.HomeScreenState
 import ru.lonelywh1te.aquaup.presentation.settings.SettingsScreen
 
 sealed class TabItem(
@@ -18,7 +17,7 @@ sealed class TabItem(
     data object Home: TabItem(
         title = R.string.home,
         icon = R.drawable.ic_home,
-        screen = { HomeScreen(state = HomeScreenState.Success.getPreviewState(), onEvent = {}) }
+        screen = { HomeScreen() }
     )
 
     data object History: TabItem(
