@@ -24,11 +24,11 @@ class WaterLogRepositoryImpl(
     }
 
     override suspend fun deleteWaterLog(waterLog: WaterLog) {
-        TODO("Not yet implemented")
+        waterLogDao.deleteWaterLog(waterLog.toWaterLogEntity())
     }
 
     override suspend fun updateWaterLog(waterLog: WaterLog) {
-        TODO("Not yet implemented")
+        waterLogDao.updateWaterLog(waterLog.toWaterLogEntity())
     }
 
 }

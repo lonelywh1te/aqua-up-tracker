@@ -1,26 +1,28 @@
 package ru.lonelywh1te.aquaup.presentation.history
 
 import ru.lonelywh1te.aquaup.domain.model.VolumeUnit
-import ru.lonelywh1te.aquaup.presentation.history.domain.HistoryData
-import java.time.LocalTime
+import ru.lonelywh1te.aquaup.domain.model.WaterLog
+import java.time.LocalDateTime
 
-data class HistoryScreenState(
-    val historyData: List<HistoryData>,
-    val volumeUnit: VolumeUnit,
-) {
-    companion object {
-        fun getPreviewState(): HistoryScreenState {
-            return HistoryScreenState(
-                historyData = listOf(
-                    HistoryData(200, LocalTime.of(22, 0)),
-                    HistoryData(300, LocalTime.of(22, 0)),
-                    HistoryData(1100, LocalTime.of(22, 0)),
-                    HistoryData(100, LocalTime.of(22, 0)),
-                    HistoryData(200, LocalTime.of(22, 0)),
-                    HistoryData(300, LocalTime.of(22, 0)),
+sealed class HistoryScreenState {
+
+    data class Success(
+        val waterLogs: List<WaterLog>,
+        val volumeUnit: VolumeUnit
+    ): HistoryScreenState() {
+        companion object {
+            val preview = HistoryScreenState.Success(
+                waterLogs = listOf(
+                    WaterLog(amountMl = 100, timestamp = LocalDateTime.now()),
+                    WaterLog(amountMl = 150, timestamp = LocalDateTime.now()),
+                    WaterLog(amountMl = 9999, timestamp = LocalDateTime.now()),
                 ),
-                volumeUnit = VolumeUnit.ML,
+                volumeUnit = VolumeUnit.ML
             )
         }
     }
+
+    data object Loading: HistoryScreenState()
+
+    data class Error(val message: String): HistoryScreenState()
 }

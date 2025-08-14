@@ -1,6 +1,5 @@
 package ru.lonelywh1te.aquaup.presentation.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -73,7 +72,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeContent(
+private fun HomeContent(
     modifier: Modifier = Modifier,
     waterGoal: Int,
     volumeUnit: VolumeUnit,
@@ -129,7 +128,7 @@ fun HomeContent(
 }
 
 @Composable
-fun HomeLoading(modifier: Modifier = Modifier) {
+private fun HomeLoading(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -139,7 +138,7 @@ fun HomeLoading(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun HomeProgressOverview(
+private fun HomeProgressOverview(
     modifier: Modifier = Modifier,
     waterGoal: Int,
     progressPercentage: Int,
@@ -161,7 +160,7 @@ fun HomeProgressOverview(
 }
 
 @Composable
-fun HomeCurrentWaterProgress(
+private fun HomeCurrentWaterProgress(
     modifier: Modifier = Modifier,
     amount: Int,
     volumeUnit: String,
@@ -187,7 +186,7 @@ fun HomeCurrentWaterProgress(
 }
 
 @Composable
-fun RecentWaterVolumes(
+private fun RecentWaterVolumes(
     modifier: Modifier = Modifier,
     volumes: List<Int>,
     volumeUnit: String,
@@ -205,7 +204,7 @@ fun RecentWaterVolumes(
 }
 
 @Composable
-fun WaterVolumeButton(
+private fun WaterVolumeButton(
     modifier: Modifier = Modifier,
     volume: Int,
     volumeUnit: String,
@@ -237,7 +236,7 @@ fun WaterVolumeButton(
 }
 
 @Composable
-fun AddWaterButton(
+private fun AddWaterButton(
     modifier: Modifier = Modifier,
     onAddWaterClick: () -> Unit
 ) {
@@ -269,14 +268,29 @@ private fun WaterVolumePreview() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-private fun HomeScreenPreviewLight() {
+private fun HomeContentPreview() {
     AquaUpTheme {
         Scaffold { innerPadding ->
-            HomeScreen(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
+            val state = HomeScreenState.Success.preview
+
+            HomeContent(
+                modifier = Modifier.padding(innerPadding),
+                waterGoal = state.waterGoal,
+                waterAmount = state.waterAmount,
+                volumeUnit = state.volumeUnit,
+                recentWaterVolumes = state.recentWaterVolumes,
+                onEvent = {  }
             )
+        }
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun HomeLoadingPreview() {
+    AquaUpTheme {
+        Scaffold { innerPadding ->
+            HomeLoading(modifier = Modifier.padding(innerPadding))
         }
     }
 }

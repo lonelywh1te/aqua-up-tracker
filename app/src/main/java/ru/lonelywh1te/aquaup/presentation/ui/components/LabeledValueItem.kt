@@ -1,5 +1,6 @@
 package ru.lonelywh1te.aquaup.presentation.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,10 +19,15 @@ import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 fun LabeledValueItem(
     label: String,
     value: String,
+    onClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
+            .clickable(
+                enabled = onClick != null,
+                onClick = { onClick?.invoke() }
+            )
             .fillMaxWidth()
             .height(57.dp)
             .padding(horizontal = 16.dp),

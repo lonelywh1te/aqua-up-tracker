@@ -12,14 +12,12 @@ sealed class HomeScreenState {
         val volumeUnit: VolumeUnit,
     ): HomeScreenState() {
         companion object {
-            fun getPreviewState(): Success {
-                return Success(
-                    waterGoal = 1800,
-                    waterAmount = 1000,
-                    recentWaterVolumes = listOf(100, 200, 300, 400, 500),
-                    volumeUnit = VolumeUnit.ML,
-                )
-            }
+            val preview = Success(
+                waterGoal = 1800,
+                waterAmount = 1000,
+                recentWaterVolumes = listOf(100, 200, 300, 400, 500),
+                volumeUnit = VolumeUnit.ML,
+            )
         }
     }
 

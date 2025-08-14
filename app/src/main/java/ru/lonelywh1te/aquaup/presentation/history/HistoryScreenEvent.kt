@@ -1,8 +1,8 @@
 package ru.lonelywh1te.aquaup.presentation.history
 
-import ru.lonelywh1te.aquaup.presentation.history.domain.HistoryData
+import ru.lonelywh1te.aquaup.domain.model.WaterLog
 
 sealed class HistoryScreenEvent {
-    data class HistoryChanged(val data: HistoryData): HistoryScreenEvent()
-    data class HistoryDeleted(val data: HistoryData): HistoryScreenEvent()
+    data class WaterLogChanged(val waterLog: WaterLog): HistoryScreenEvent()
+    data class WaterLogDeleted(val waterLog: WaterLog): HistoryScreenEvent()
 }

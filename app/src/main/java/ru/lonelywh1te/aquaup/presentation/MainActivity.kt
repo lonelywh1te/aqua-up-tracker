@@ -17,8 +17,6 @@ import ru.lonelywh1te.aquaup.presentation.history.HistoryScreen
 import ru.lonelywh1te.aquaup.presentation.history.HistoryScreenState
 import ru.lonelywh1te.aquaup.presentation.home.HomeScreen
 
-// TODO: volume unit
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +25,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AquaUpTheme {
-                Scaffold (
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) { innerPadding ->
+                Scaffold (modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainScreen(
                         modifier = Modifier
                             .padding(top = innerPadding.calculateTopPadding())
@@ -38,24 +33,6 @@ class MainActivity : ComponentActivity() {
                             .padding(bottom = innerPadding.calculateBottomPadding())
                     )
                 }
-            }
-        }
-    }
-
-    @Preview(showBackground = true, showSystemUi = true)
-    @Composable
-    private fun MainScreenPreview() {
-        AquaUpTheme {
-            Scaffold (
-                modifier = Modifier
-                    .fillMaxSize()
-            ) { innerPadding ->
-                MainScreen(
-                    modifier = Modifier
-                        .padding(top = innerPadding.calculateTopPadding())
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .padding(bottom = innerPadding.calculateBottomPadding())
-                )
             }
         }
     }

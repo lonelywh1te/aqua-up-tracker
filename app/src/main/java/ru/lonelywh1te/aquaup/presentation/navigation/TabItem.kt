@@ -23,7 +23,7 @@ sealed class TabItem(
     data object History: TabItem(
         title = R.string.history,
         icon = R.drawable.ic_history,
-        screen = { HistoryScreen(state = HistoryScreenState.getPreviewState(), onEditHistoryDataClick = {}) }
+        screen = { HistoryScreen() }
     )
 
     data object Settings: TabItem(

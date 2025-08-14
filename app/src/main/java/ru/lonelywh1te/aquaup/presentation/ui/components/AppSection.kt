@@ -18,16 +18,18 @@ import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 @Composable
 fun AppSection(
     modifier: Modifier = Modifier,
-    title: String,
+    title: String? = null,
     content: @Composable () -> Unit,
 
     ) {
     Column(modifier = modifier) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(vertical = 16.dp).fillMaxWidth()
-        )
+        if (title != null) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(vertical = 16.dp).fillMaxWidth()
+            )
+        }
 
         Surface(
             modifier = Modifier.fillMaxWidth(),

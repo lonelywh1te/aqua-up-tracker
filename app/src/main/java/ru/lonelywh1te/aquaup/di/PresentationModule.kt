@@ -2,6 +2,7 @@ package ru.lonelywh1te.aquaup.di
 
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
+import ru.lonelywh1te.aquaup.presentation.history.HistoryViewModel
 import ru.lonelywh1te.aquaup.presentation.home.HomeViewModel
 
 val presentationModule = module {
@@ -11,6 +12,15 @@ val presentationModule = module {
             settingsPreferences = get(),
             getTodayWaterLogsUseCase = get(),
             addWaterUseCase = get(),
+        )
+    }
+
+    viewModel<HistoryViewModel> {
+        HistoryViewModel(
+            settingsPreferences = get(),
+            getTodayWaterLogsUseCase = get(),
+            updateWaterLogUseCase = get(),
+            deleteWaterLogUseCase = get(),
         )
     }
 
