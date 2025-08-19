@@ -1,6 +1,5 @@
 package ru.lonelywh1te.aquaup.presentation.history
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,7 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
 import ru.lonelywh1te.aquaup.R
-import ru.lonelywh1te.aquaup.domain.model.VolumeUnit
+import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.WaterLog
 import ru.lonelywh1te.aquaup.presentation.ui.components.AppSection
 import ru.lonelywh1te.aquaup.presentation.ui.components.LabeledValueItem
@@ -328,7 +327,7 @@ private fun WaterLogEditorBottomSheetPreview() {
             onSave = {},
             onDelete = {},
             onDismiss = {},
-            volumeUnit = VolumeUnit.ML
+            volumeUnit = VolumeUnit.Ml
         )
     }
 }

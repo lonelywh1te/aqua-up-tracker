@@ -23,7 +23,6 @@ fun SettingsScreen(
 ) {
     Column(
         modifier = modifier
-            .background(color = MaterialTheme.colorScheme.surfaceVariant)
             .padding(horizontal = 16.dp)
             .fillMaxSize()
     ) {

@@ -1,6 +1,6 @@
 package ru.lonelywh1te.aquaup.presentation.history
 
-import ru.lonelywh1te.aquaup.domain.model.VolumeUnit
+import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.WaterLog
 import java.time.LocalDateTime
 
@@ -17,7 +17,7 @@ sealed class HistoryScreenState {
                     WaterLog(amountMl = 150, timestamp = LocalDateTime.now()),
                     WaterLog(amountMl = 9999, timestamp = LocalDateTime.now()),
                 ),
-                volumeUnit = VolumeUnit.ML
+                volumeUnit = VolumeUnit.Ml
             )
         }
     }

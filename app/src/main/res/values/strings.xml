@@ -13,4 +13,14 @@
     <string name="cancel">Отмена</string>
     <string name="ok">ОК</string>
     <string name="enter_volume">Введите объём</string>
+    <string name="ml">мл</string>
+    <string name="oz">унц</string>
+    <string name="light">Светлая</string>
+    <string name="dark">Тёмная</string>
+    <string name="as_system">Как в системе</string>
+    <string name="dont_remind">Не напоминать</string>
+    <string name="every_hour">Каждый час</string>
+    <string name="every_two_hours">Каждые два часа</string>
+    <string name="every_three_hours">Каждые три часа</string>
+    <string name="custom_remind">Индивидуально</string>
 </resources>

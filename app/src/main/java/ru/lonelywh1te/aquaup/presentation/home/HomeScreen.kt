@@ -1,5 +1,6 @@
 package ru.lonelywh1te.aquaup.presentation.home
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,10 +14,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,7 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
 import ru.lonelywh1te.aquaup.R
-import ru.lonelywh1te.aquaup.domain.model.VolumeUnit
+import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 import kotlin.math.roundToInt
@@ -210,9 +217,13 @@ private fun WaterVolumeButton(
     volumeUnit: String,
     onClick: (volume: Int) -> Unit
 ) {
-    ElevatedButton (
+    Button (
         modifier = modifier.size(80.dp),
         contentPadding = PaddingValues(0.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ),
         onClick = { onClick(volume) },
     ) {
         Column(
@@ -240,11 +251,12 @@ private fun AddWaterButton(
     modifier: Modifier = Modifier,
     onAddWaterClick: () -> Unit
 ) {
-    ElevatedButton(
+    FilledTonalButton (
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
         onClick = onAddWaterClick,
+
     ) {
         Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_add), contentDescription = null)
 

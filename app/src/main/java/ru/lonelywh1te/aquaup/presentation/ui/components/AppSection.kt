@@ -33,7 +33,7 @@ fun AppSection(
 
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.surface,
+            color = MaterialTheme.colorScheme.surfaceContainer,
             shape = ShapeDefaults.Large,
             content = content
         )

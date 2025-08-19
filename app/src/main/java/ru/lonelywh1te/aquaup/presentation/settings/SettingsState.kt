@@ -1,18 +1,13 @@
-package ru.lonelywh1te.aquaup.domain.storage
+package ru.lonelywh1te.aquaup.presentation.settings
 
 import ru.lonelywh1te.aquaup.domain.model.settings.AppTheme
 import ru.lonelywh1te.aquaup.domain.model.settings.ReminderInterval
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.WaterGoal
 
-interface SettingsPreferences {
-
-    var volumeUnit: VolumeUnit
-
-    var waterGoal: WaterGoal
-
-    var theme: AppTheme
-
-    var reminderInterval: ReminderInterval
-
-}
+data class SettingsState (
+    val volumeUnit: VolumeUnit,
+    val waterGoal: WaterGoal,
+    val theme: AppTheme,
+    val reminderInterval: ReminderInterval,
+)

@@ -1,6 +1,6 @@
 package ru.lonelywh1te.aquaup.presentation.home
 
-import ru.lonelywh1te.aquaup.domain.model.VolumeUnit
+import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 
 
 sealed class HomeScreenState {
@@ -16,7 +16,7 @@ sealed class HomeScreenState {
                 waterGoal = 1800,
                 waterAmount = 1000,
                 recentWaterVolumes = listOf(100, 200, 300, 400, 500),
-                volumeUnit = VolumeUnit.ML,
+                volumeUnit = VolumeUnit.Ml,
             )
         }
     }
