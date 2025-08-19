@@ -1,6 +1,5 @@
 package ru.lonelywh1te.aquaup.presentation.home
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,14 +15,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,6 +42,7 @@ import ru.lonelywh1te.aquaup.R
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
+import ru.lonelywh1te.aquaup.presentation.ui.utils.valueStringRes
 import kotlin.math.roundToInt
 
 @Composable
@@ -98,19 +94,19 @@ private fun HomeContent(
 
         HomeProgressOverview(
             waterGoal = waterGoal,
-            volumeUnit = volumeUnit.uiName,
+            volumeUnit = stringResource(volumeUnit.valueStringRes()),
             progressPercentage = if (waterGoal != 0) ((waterAmount.toFloat() / waterGoal) * 100).roundToInt() else 0
         )
 
         HomeCurrentWaterProgress(
             amount = waterAmount,
-            volumeUnit = volumeUnit.uiName,
+            volumeUnit = stringResource(volumeUnit.valueStringRes()),
             modifier = Modifier.weight(1f)
         )
 
         RecentWaterVolumes(
             volumes = recentWaterVolumes,
-            volumeUnit = volumeUnit.uiName,
+            volumeUnit = stringResource(volumeUnit.valueStringRes()),
             onVolumeSelected = {
                 onEvent(HomeScreenEvent.AddWater(it))
             }

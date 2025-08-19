@@ -51,6 +51,7 @@ import ru.lonelywh1te.aquaup.presentation.ui.components.LabeledValueItem
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.TimeInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
+import ru.lonelywh1te.aquaup.presentation.ui.utils.valueStringRes
 import ru.lonelywh1te.aquaup.presentation.ui.utils.toStringFormat
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -96,7 +97,7 @@ fun HistoryContent(
         AppSection(title = stringResource(R.string.history)) {
             HistoryList(
                 list = waterLogs,
-                volumeUnit = volumeUnit.uiName,
+                volumeUnit = stringResource(volumeUnit.valueStringRes()),
                 onEditButtonClick = { waterLog ->
                     editWaterLog = waterLog
                 }
@@ -169,7 +170,7 @@ fun WaterLogEditorBottomSheet(
                 Column {
                     LabeledValueItem(
                         label = "Объём",
-                        value = "${editedWaterLog.amountMl} ${volumeUnit.uiName}",
+                        value = "${editedWaterLog.amountMl} ${stringResource(volumeUnit.valueStringRes())}",
                         onClick = { isWaterInputDialogVisible = true }
                     )
 

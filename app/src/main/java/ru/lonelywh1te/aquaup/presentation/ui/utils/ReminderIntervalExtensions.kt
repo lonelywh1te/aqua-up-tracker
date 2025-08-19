@@ -5,7 +5,7 @@ import ru.lonelywh1te.aquaup.R
 import ru.lonelywh1te.aquaup.domain.model.settings.ReminderInterval
 
 @StringRes
-fun ReminderInterval.stringRes(): Int {
+fun ReminderInterval.valueStringRes(): Int {
     return when (this) {
         is ReminderInterval.None -> R.string.dont_remind
         is ReminderInterval.OneHour -> R.string.every_hour

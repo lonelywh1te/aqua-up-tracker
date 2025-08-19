@@ -23,4 +23,9 @@
     <string name="every_two_hours">Каждые два часа</string>
     <string name="every_three_hours">Каждые три часа</string>
     <string name="custom_remind">Индивидуально</string>
+    <string name="volume_unit">Единица измерения</string>
+    <string name="water_goal">Цель</string>
+    <string name="reminder">Напоминание</string>
+    <string name="app_theme">Тема приложения</string>
+    <string name="version">Версия</string>
 </resources>
