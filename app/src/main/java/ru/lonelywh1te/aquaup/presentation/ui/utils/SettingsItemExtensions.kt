@@ -7,9 +7,9 @@ import ru.lonelywh1te.aquaup.domain.model.SettingsItem
 @StringRes
 fun SettingsItem.stringRes(): Int {
     return when (this) {
-        SettingsItem.AppTheme -> R.string.app_theme
-        SettingsItem.ReminderInterval -> R.string.reminder
-        SettingsItem.VolumeUnit -> R.string.volume_unit
-        SettingsItem.WaterGoal -> R.string.water_goal
+        is SettingsItem.AppTheme -> R.string.app_theme
+        is SettingsItem.ReminderInterval -> R.string.reminder
+        is SettingsItem.VolumeUnit -> R.string.volume_unit
+        is SettingsItem.WaterGoal -> R.string.water_goal
     }
 }

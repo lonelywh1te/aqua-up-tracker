@@ -7,8 +7,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -18,6 +16,8 @@ import ru.lonelywh1te.aquaup.domain.model.settings.AppTheme
 import ru.lonelywh1te.aquaup.domain.model.settings.ReminderInterval
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.WaterGoal
+import ru.lonelywh1te.aquaup.domain.model.settings.convertMlToOz
+import ru.lonelywh1te.aquaup.domain.model.settings.convertOzToMl
 import ru.lonelywh1te.aquaup.domain.model.settings.name
 import ru.lonelywh1te.aquaup.domain.storage.SettingsPreferences
 
@@ -37,8 +37,15 @@ class SettingsDataStore(
     private val dataStore = context.dataStore
 
     override val waterGoalFlow: Flow<WaterGoal> = dataStore.data.map { prefs ->
+        val volumeUnit = volumeUnitFlow.first()
         val value = prefs[PreferencesKeys.waterGoal] ?: 0
-        WaterGoal(value)
+
+        WaterGoal(
+            when (volumeUnit) {
+                VolumeUnit.Ml -> value
+                VolumeUnit.Oz -> convertMlToOz(value)
+            }
+        )
     }
 
     override val volumeUnitFlow: Flow<VolumeUnit> = dataStore.data.map { prefs ->
@@ -58,7 +65,7 @@ class SettingsDataStore(
     }
 
     override val themeFlow: Flow<AppTheme> = dataStore.data.map { prefs ->
-        val themeName = prefs[PreferencesKeys.theme] ?: AppTheme.Light.name
+        val themeName = prefs[PreferencesKeys.theme] ?: AppTheme.System.name
         AppTheme.valueOf(themeName)
     }
 
@@ -70,8 +77,13 @@ class SettingsDataStore(
     }
 
     override suspend fun setWaterGoal(value: WaterGoal) {
+        val volumeUnit = volumeUnitFlow.first()
+
         dataStore.edit { settings ->
-            settings[PreferencesKeys.waterGoal] = value.value
+            settings[PreferencesKeys.waterGoal] = when (volumeUnit) {
+                VolumeUnit.Ml -> value.value
+                VolumeUnit.Oz -> convertOzToMl(value.value)
+            }
         }
     }
 

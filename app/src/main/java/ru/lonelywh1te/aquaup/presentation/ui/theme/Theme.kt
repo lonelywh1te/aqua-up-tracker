@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import ru.lonelywh1te.aquaup.domain.model.settings.AppTheme
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -88,21 +89,17 @@ private val darkScheme = darkColorScheme(
 
 @Composable
 fun AquaUpTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false,
+    theme: AppTheme = AppTheme.System,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-        // darkTheme -> darkScheme
-        else -> lightScheme
+    val colors = when (theme) {
+        AppTheme.Light -> lightScheme
+        AppTheme.Dark -> darkScheme
+        AppTheme.System -> if (isSystemInDarkTheme()) darkScheme else lightScheme
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = colors,
         typography = AppTypography,
         content = content
     )

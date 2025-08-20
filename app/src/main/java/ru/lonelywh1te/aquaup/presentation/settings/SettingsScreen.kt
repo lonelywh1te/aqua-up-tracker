@@ -5,12 +5,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,9 +27,12 @@ import ru.lonelywh1te.aquaup.domain.model.settings.AppTheme
 import ru.lonelywh1te.aquaup.domain.model.settings.ReminderInterval
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.WaterGoal
+import ru.lonelywh1te.aquaup.presentation.home.HomeScreenEvent
 import ru.lonelywh1te.aquaup.presentation.home.HomeViewModel
 import ru.lonelywh1te.aquaup.presentation.ui.components.AppSection
 import ru.lonelywh1te.aquaup.presentation.ui.components.LabeledValueItem
+import ru.lonelywh1te.aquaup.presentation.ui.components.SelectableListBottomSheet
+import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 import ru.lonelywh1te.aquaup.presentation.ui.utils.getAppVersion
 import ru.lonelywh1te.aquaup.presentation.ui.utils.stringRes
@@ -45,7 +51,7 @@ fun SettingsScreen(
             SettingsContent(
                 modifier = modifier,
                 state = successState,
-                onSettingsItemClick = { }
+                onEvent = viewModel::onEvent
             )
         }
         is SettingsScreenState.Loading -> SettingsLoading(modifier)
@@ -53,12 +59,15 @@ fun SettingsScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsContent(
     state: SettingsScreenState.Success,
-    onSettingsItemClick: (SettingsItem) -> Unit,
+    onEvent: (SettingsScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var selectedSettingsItem: SettingsItem? by remember { mutableStateOf(null) }
+
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
@@ -70,13 +79,58 @@ fun SettingsContent(
                 waterGoal = state.waterGoal,
                 reminderInterval = state.reminderInterval,
                 theme = state.theme,
-                onSettingsItemClick = onSettingsItemClick,
+                onSettingsItemClick = { item ->
+                    selectedSettingsItem = item
+                },
             )
         }
 
         AppSection(title = stringResource(R.string.about)) {
             AboutSettingsList()
         }
+    }
+
+    when (selectedSettingsItem) {
+        is SettingsItem.AppTheme -> {
+            val themeOptions = AppTheme.entries
+            val stringItems = themeOptions.map { stringResource(it.valueStringRes()) }
+
+            SelectableListBottomSheet(
+                items = stringItems,
+                onItemSelected = { item ->
+                    onEvent(SettingsScreenEvent.ThemeChanged(themeOptions[stringItems.indexOf(item)]))
+                    selectedSettingsItem = null
+                },
+                onDismiss = { selectedSettingsItem = null }
+            )
+        }
+        is SettingsItem.ReminderInterval -> {
+            /* TODO */
+        }
+        is SettingsItem.VolumeUnit -> {
+            val volumeUnitOptions = VolumeUnit.entries
+            val stringItems = volumeUnitOptions.map { stringResource(it.valueStringRes()) }
+
+            SelectableListBottomSheet(
+                items = stringItems,
+                onItemSelected = { item ->
+                    onEvent(SettingsScreenEvent.VolumeUnitChanged(volumeUnitOptions[stringItems.indexOf(item)]))
+                    selectedSettingsItem = null
+                },
+                onDismiss = { selectedSettingsItem = null }
+            )
+        }
+        is SettingsItem.WaterGoal -> {
+            NumberInputDialog(
+                title = stringResource(R.string.enter_volume),
+                onConfirm = { value ->
+                    onEvent(SettingsScreenEvent.WaterGoalChanged(WaterGoal(value)))
+                    selectedSettingsItem = null
+                },
+                onDismiss = { selectedSettingsItem = null }
+            )
+        }
+        null -> return
     }
 }
 
@@ -103,7 +157,7 @@ fun MainSettingsList(
 ) {
     val settings = listOf(
         SettingsItem.VolumeUnit to stringResource(volumeUnit.valueStringRes()),
-        SettingsItem.WaterGoal to waterGoal.value.toString(),
+        SettingsItem.WaterGoal(waterGoal.value) to waterGoal.value.toString(),
         SettingsItem.ReminderInterval to stringResource(reminderInterval.valueStringRes()),
         SettingsItem.AppTheme to stringResource(theme.valueStringRes()),
     )
@@ -145,7 +199,7 @@ private fun SettingsScreenPreview() {
             SettingsContent(
                 modifier = Modifier.padding(innerPadding),
                 state = state,
-                onSettingsItemClick = { }
+                onEvent = { }
             )
         }
     }

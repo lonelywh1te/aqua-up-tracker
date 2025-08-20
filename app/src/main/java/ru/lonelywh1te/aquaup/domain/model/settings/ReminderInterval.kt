@@ -19,9 +19,7 @@ sealed class ReminderInterval {
     data class Custom(val times: List<LocalTime>): ReminderInterval()
 
     companion object {
-        fun getAll(): List<ReminderInterval> {
-            return listOf(OneHour, TwoHours, ThreeHours, Custom(emptyList()))
-        }
+        val entries = listOf(OneHour, TwoHours, ThreeHours, Custom(emptyList()))
 
         fun fromName(name: String, times: List<LocalTime> = emptyList()): ReminderInterval {
             return when(name) {

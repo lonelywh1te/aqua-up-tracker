@@ -24,18 +24,21 @@ val domainModule = module {
 
     factory<GetTodayWaterLogsUseCase> {
         GetTodayWaterLogsUseCase(
+            settingsPreferences = get(),
             waterLogRepository = get()
         )
     }
 
     factory<AddWaterUseCase> {
         AddWaterUseCase(
+            settingsPreferences = get(),
             waterLogRepository = get()
         )
     }
 
     factory<UpdateWaterLogUseCase> {
         UpdateWaterLogUseCase(
+            settingsPreferences = get(),
             waterLogRepository = get()
         )
     }
