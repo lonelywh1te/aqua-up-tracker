@@ -28,4 +28,6 @@
     <string name="reminder">Напоминание</string>
     <string name="app_theme">Тема приложения</string>
     <string name="version">Версия</string>
+    <string name="reminder_times">Время напоминания</string>
+    <string name="submit">Подтвердить</string>
 </resources>

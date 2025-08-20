@@ -12,13 +12,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.aquaup.data.toLocalTimeList
 import ru.lonelywh1te.aquaup.data.toPrefsString
+import ru.lonelywh1te.aquaup.domain.model.ReminderSchedule
 import ru.lonelywh1te.aquaup.domain.model.settings.AppTheme
 import ru.lonelywh1te.aquaup.domain.model.settings.ReminderInterval
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.WaterGoal
 import ru.lonelywh1te.aquaup.domain.model.settings.convertMlToOz
 import ru.lonelywh1te.aquaup.domain.model.settings.convertOzToMl
-import ru.lonelywh1te.aquaup.domain.model.settings.name
 import ru.lonelywh1te.aquaup.domain.storage.SettingsPreferences
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = SettingsDataStore.NAME)
@@ -30,8 +30,9 @@ class SettingsDataStore(
         val waterGoal = intPreferencesKey("water_goal")
         val volumeUnit = stringPreferencesKey("volume_unit")
         val theme = stringPreferencesKey("theme")
+
         val reminderInterval = stringPreferencesKey("reminder_interval")
-        val reminderIntervalTimes = stringPreferencesKey("reminder_interval_times")
+        val reminderTimes = stringPreferencesKey("reminder_times")
     }
 
     private val dataStore = context.dataStore
@@ -53,22 +54,19 @@ class SettingsDataStore(
         VolumeUnit.valueOf(volumeUnitName)
     }
 
-    override val reminderIntervalFlow: Flow<ReminderInterval> = dataStore.data.map { prefs ->
-        val reminderIntervalName = prefs[PreferencesKeys.reminderInterval] ?: ReminderInterval.None.name()
-        var reminderInterval = ReminderInterval.fromName(reminderIntervalName)
+    override val reminderSchedule: Flow<ReminderSchedule> = dataStore.data.map { prefs ->
+        val reminderIntervalName = prefs[PreferencesKeys.reminderInterval] ?: ReminderInterval.None.name
 
-        if (reminderInterval is ReminderInterval.Custom) {
-            reminderInterval = reminderInterval.copy(times = prefs[PreferencesKeys.reminderIntervalTimes]?.toLocalTimeList() ?: emptyList())
-        }
+        val reminderInterval = ReminderInterval.valueOf(reminderIntervalName)
+        val reminderTimes = prefs[PreferencesKeys.reminderTimes]?.toLocalTimeList() ?: emptyList()
 
-        reminderInterval
+        ReminderSchedule(reminderInterval, reminderTimes)
     }
 
     override val themeFlow: Flow<AppTheme> = dataStore.data.map { prefs ->
         val themeName = prefs[PreferencesKeys.theme] ?: AppTheme.System.name
         AppTheme.valueOf(themeName)
     }
-
 
     override suspend fun setVolumeUnit(value: VolumeUnit) {
         dataStore.edit { settings ->
@@ -93,12 +91,12 @@ class SettingsDataStore(
         }
     }
 
-    override suspend fun setReminderInterval(value: ReminderInterval) {
+    override suspend fun setReminderSchedule(value: ReminderSchedule) {
         dataStore.edit { settings ->
-            settings[PreferencesKeys.reminderInterval] = value.name()
+            settings[PreferencesKeys.reminderInterval] = value.interval.name
 
-            if (value is ReminderInterval.Custom) {
-                settings[PreferencesKeys.reminderIntervalTimes] = value.times.toPrefsString()
+            if (value.interval == ReminderInterval.Custom) {
+                settings[PreferencesKeys.reminderTimes] = value.times.toPrefsString()
             }
         }
     }

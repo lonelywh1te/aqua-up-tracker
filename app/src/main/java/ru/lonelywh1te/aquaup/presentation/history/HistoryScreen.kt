@@ -47,7 +47,7 @@ import ru.lonelywh1te.aquaup.R
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.WaterLog
 import ru.lonelywh1te.aquaup.presentation.ui.components.AppSection
-import ru.lonelywh1te.aquaup.presentation.ui.components.LabeledValueItem
+import ru.lonelywh1te.aquaup.presentation.ui.components.ValueListItem
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.TimeInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
@@ -168,7 +168,7 @@ fun WaterLogEditorBottomSheet(
         ) {
             AppSection {
                 Column {
-                    LabeledValueItem(
+                    ValueListItem(
                         label = "Объём",
                         value = "${editedWaterLog.amountMl} ${stringResource(volumeUnit.valueStringRes())}",
                         onClick = { isWaterInputDialogVisible = true }
@@ -176,7 +176,7 @@ fun WaterLogEditorBottomSheet(
 
                     HorizontalDivider()
 
-                    LabeledValueItem(
+                    ValueListItem(
                         label = "Время",
                         value = editedWaterLog.timestamp.toLocalTime().toStringFormat(),
                         onClick = { isTimeInputDialogVisible = true }

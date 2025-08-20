@@ -1,5 +1,6 @@
 package ru.lonelywh1te.aquaup.presentation.settings
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,21 +23,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
 import ru.lonelywh1te.aquaup.R
-import ru.lonelywh1te.aquaup.domain.model.SettingsItem
+import ru.lonelywh1te.aquaup.domain.model.ReminderSchedule
 import ru.lonelywh1te.aquaup.domain.model.settings.AppTheme
 import ru.lonelywh1te.aquaup.domain.model.settings.ReminderInterval
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.WaterGoal
-import ru.lonelywh1te.aquaup.presentation.home.HomeScreenEvent
-import ru.lonelywh1te.aquaup.presentation.home.HomeViewModel
+import ru.lonelywh1te.aquaup.presentation.navigation.SettingsDestination
+import ru.lonelywh1te.aquaup.presentation.settings.SettingsScreenEvent.*
 import ru.lonelywh1te.aquaup.presentation.ui.components.AppSection
-import ru.lonelywh1te.aquaup.presentation.ui.components.LabeledValueItem
+import ru.lonelywh1te.aquaup.presentation.ui.components.CheckableList
+import ru.lonelywh1te.aquaup.presentation.ui.components.CheckableListBottomSheet
+import ru.lonelywh1te.aquaup.presentation.ui.components.ListItem
+import ru.lonelywh1te.aquaup.presentation.ui.components.ValueListItem
 import ru.lonelywh1te.aquaup.presentation.ui.components.SelectableListBottomSheet
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 import ru.lonelywh1te.aquaup.presentation.ui.utils.getAppVersion
 import ru.lonelywh1te.aquaup.presentation.ui.utils.stringRes
+import ru.lonelywh1te.aquaup.presentation.ui.utils.toStringFormat
 import ru.lonelywh1te.aquaup.presentation.ui.utils.valueStringRes
+import java.time.LocalTime
 
 @Composable
 fun SettingsScreen(
@@ -66,7 +72,7 @@ fun SettingsContent(
     onEvent: (SettingsScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var selectedSettingsItem: SettingsItem? by remember { mutableStateOf(null) }
+    var settingsDestination: SettingsDestination? by remember { mutableStateOf(null) }
 
     Column(
         modifier = modifier
@@ -77,10 +83,10 @@ fun SettingsContent(
             MainSettingsList(
                 volumeUnit = state.volumeUnit,
                 waterGoal = state.waterGoal,
-                reminderInterval = state.reminderInterval,
+                reminderSchedule = state.reminderSchedule,
                 theme = state.theme,
-                onSettingsItemClick = { item ->
-                    selectedSettingsItem = item
+                onSettingsItemClick = { destination ->
+                    settingsDestination = destination
                 },
             )
         }
@@ -90,44 +96,67 @@ fun SettingsContent(
         }
     }
 
-    when (selectedSettingsItem) {
-        is SettingsItem.AppTheme -> {
-            val themeOptions = AppTheme.entries
-            val stringItems = themeOptions.map { stringResource(it.valueStringRes()) }
-
+    when (settingsDestination) {
+        is SettingsDestination.AppTheme -> {
             SelectableListBottomSheet(
-                items = stringItems,
-                onItemSelected = { item ->
-                    onEvent(SettingsScreenEvent.ThemeChanged(themeOptions[stringItems.indexOf(item)]))
-                    selectedSettingsItem = null
+                items = AppTheme.entries,
+                text = { stringResource(it.valueStringRes()) },
+                onItemSelected = { selectedTheme ->
+                    onEvent(ThemeChanged(selectedTheme))
+                    settingsDestination = null
                 },
-                onDismiss = { selectedSettingsItem = null }
+                onDismiss = { settingsDestination = null }
             )
         }
-        is SettingsItem.ReminderInterval -> {
-            /* TODO */
-        }
-        is SettingsItem.VolumeUnit -> {
-            val volumeUnitOptions = VolumeUnit.entries
-            val stringItems = volumeUnitOptions.map { stringResource(it.valueStringRes()) }
-
+        is SettingsDestination.ReminderSchedule -> {
             SelectableListBottomSheet(
-                items = stringItems,
-                onItemSelected = { item ->
-                    onEvent(SettingsScreenEvent.VolumeUnitChanged(volumeUnitOptions[stringItems.indexOf(item)]))
-                    selectedSettingsItem = null
+                items = ReminderInterval.entries,
+                text = { stringResource(it.valueStringRes()) },
+                onItemSelected = { selectedInterval ->
+                    settingsDestination = if (selectedInterval == ReminderInterval.Custom){
+                        SettingsDestination.ReminderTimes
+                    } else {
+                        null
+                    }
+
+                    onEvent(ReminderScheduleChanged(ReminderSchedule(selectedInterval)))
                 },
-                onDismiss = { selectedSettingsItem = null }
+                onDismiss = { settingsDestination = null }
             )
         }
-        is SettingsItem.WaterGoal -> {
+        is SettingsDestination.ReminderTimes -> {
+            CheckableListBottomSheet(
+                items = (0..23).map { LocalTime.of(it, 0) },
+                checkedItems = state.reminderSchedule.times,
+                text = { it.toStringFormat() },
+                onConfirm = { times ->
+                    Log.d("SettingsScreen", times.toString())
+                    onEvent(ReminderTimesChanged(times))
+                    settingsDestination = null
+                },
+                onDismiss = { settingsDestination = null }
+            )
+            
+        }
+        is SettingsDestination.VolumeUnit -> {
+            SelectableListBottomSheet(
+                items = VolumeUnit.entries,
+                text = { stringResource(it.valueStringRes()) },
+                onItemSelected = { selectedVolumeUnit ->
+                    onEvent(VolumeUnitChanged(selectedVolumeUnit))
+                    settingsDestination = null
+                },
+                onDismiss = { settingsDestination = null }
+            )
+        }
+        is SettingsDestination.WaterGoal -> {
             NumberInputDialog(
                 title = stringResource(R.string.enter_volume),
                 onConfirm = { value ->
-                    onEvent(SettingsScreenEvent.WaterGoalChanged(WaterGoal(value)))
-                    selectedSettingsItem = null
+                    onEvent(WaterGoalChanged(WaterGoal(value)))
+                    settingsDestination = null
                 },
-                onDismiss = { selectedSettingsItem = null }
+                onDismiss = { settingsDestination = null }
             )
         }
         null -> return
@@ -150,25 +179,33 @@ fun SettingsLoading(
 fun MainSettingsList(
     volumeUnit: VolumeUnit,
     waterGoal: WaterGoal,
-    reminderInterval: ReminderInterval,
+    reminderSchedule: ReminderSchedule,
     theme: AppTheme,
-    onSettingsItemClick: (SettingsItem) -> Unit,
+    onSettingsItemClick: (SettingsDestination) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val settings = listOf(
-        SettingsItem.VolumeUnit to stringResource(volumeUnit.valueStringRes()),
-        SettingsItem.WaterGoal(waterGoal.value) to waterGoal.value.toString(),
-        SettingsItem.ReminderInterval to stringResource(reminderInterval.valueStringRes()),
-        SettingsItem.AppTheme to stringResource(theme.valueStringRes()),
+        SettingsDestination.VolumeUnit to stringResource(volumeUnit.valueStringRes()),
+        SettingsDestination.WaterGoal(waterGoal.value) to waterGoal.value.toString(),
+        SettingsDestination.ReminderSchedule to stringResource(reminderSchedule.interval.valueStringRes()),
+        SettingsDestination.AppTheme to stringResource(theme.valueStringRes()),
     )
 
     Column(modifier = modifier) {
         settings.forEachIndexed { index, (item, value) ->
-            LabeledValueItem(
+            ValueListItem(
                 label = stringResource(item.stringRes()),
                 value = value,
                 onClick = { onSettingsItemClick(item) }
             )
+
+            if (item is SettingsDestination.ReminderSchedule && reminderSchedule.interval == ReminderInterval.Custom) {
+                HorizontalDivider()
+                ListItem(
+                    label = stringResource(SettingsDestination.ReminderTimes.stringRes()),
+                    onClick = { onSettingsItemClick(SettingsDestination.ReminderTimes) }
+                )
+            }
 
             if (index < settings.lastIndex) {
                 HorizontalDivider()
@@ -185,7 +222,7 @@ fun AboutSettingsList(
     val version = remember { context.getAppVersion() }
 
     Column {
-        LabeledValueItem(stringResource(R.string.version), value = version)
+        ValueListItem(label = stringResource(R.string.version), value = version)
     }
 }
 

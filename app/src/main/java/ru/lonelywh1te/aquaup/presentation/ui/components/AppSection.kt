@@ -19,9 +19,8 @@ import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 fun AppSection(
     modifier: Modifier = Modifier,
     title: String? = null,
-    content: @Composable () -> Unit,
-
-    ) {
+    content: @Composable () -> Unit
+) {
     Column(modifier = modifier) {
         if (title != null) {
             Text(
@@ -40,14 +39,14 @@ fun AppSection(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun AppSectionPreview() {
     AquaUpTheme {
         AppSection(title = "Title") {
             LazyColumn {
                 items(List(5) { "Text" }) { item ->
-                    LabeledValueItem(
+                    ValueListItem(
                         label = "label", value = item
                     )
                 }
