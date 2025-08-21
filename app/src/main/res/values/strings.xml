@@ -30,4 +30,6 @@
     <string name="version">Версия</string>
     <string name="reminder_times">Время напоминания</string>
     <string name="submit">Подтвердить</string>
+    <string name="water_remind_notification_title1">Время попить воды!</string>
+    <string name="water_remind_notification_description1">Выпей стакан воды, чтобы оставаться в тонусе.</string>
 </resources>

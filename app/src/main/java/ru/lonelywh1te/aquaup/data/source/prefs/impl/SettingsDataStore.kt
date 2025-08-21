@@ -94,10 +94,7 @@ class SettingsDataStore(
     override suspend fun setReminderSchedule(value: ReminderSchedule) {
         dataStore.edit { settings ->
             settings[PreferencesKeys.reminderInterval] = value.interval.name
-
-            if (value.interval == ReminderInterval.Custom) {
-                settings[PreferencesKeys.reminderTimes] = value.times.toPrefsString()
-            }
+            settings[PreferencesKeys.reminderTimes] = value.times.toPrefsString()
         }
     }
 

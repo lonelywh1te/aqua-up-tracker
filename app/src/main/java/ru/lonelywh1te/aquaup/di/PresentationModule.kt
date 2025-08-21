@@ -1,10 +1,15 @@
 package ru.lonelywh1te.aquaup.di
 
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.workmanager.dsl.worker
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.lonelywh1te.aquaup.presentation.history.HistoryViewModel
 import ru.lonelywh1te.aquaup.presentation.home.HomeViewModel
+import ru.lonelywh1te.aquaup.presentation.notification.AppNotificationManager
+import ru.lonelywh1te.aquaup.presentation.reminder.WaterReminder
 import ru.lonelywh1te.aquaup.presentation.settings.SettingsViewModel
+import ru.lonelywh1te.aquaup.presentation.worker.WaterReminderWorker
 
 val presentationModule = module {
 
@@ -28,6 +33,23 @@ val presentationModule = module {
     viewModel<SettingsViewModel> {
         SettingsViewModel(
             settingsPreferences = get(),
+            waterReminder = get(),
+        )
+    }
+
+    single<AppNotificationManager> {
+        AppNotificationManager(androidContext())
+    }
+
+    single<WaterReminder> {
+        WaterReminder(androidContext())
+    }
+
+    worker<WaterReminderWorker> {
+        WaterReminderWorker(
+            context = androidContext(),
+            workerParameters = get(),
+            notificationManager = get(),
         )
     }
 

@@ -9,9 +9,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.aquaup.domain.storage.SettingsPreferences
+import ru.lonelywh1te.aquaup.presentation.reminder.WaterReminder
 
 class SettingsViewModel(
     private val settingsPreferences: SettingsPreferences,
+    private val waterReminder: WaterReminder,
 ): ViewModel() {
     val state: StateFlow<SettingsScreenState> = combine(
         settingsPreferences.volumeUnitFlow,
@@ -31,11 +33,14 @@ class SettingsViewModel(
                 }
                 is SettingsScreenEvent.ReminderScheduleChanged -> {
                     settingsPreferences.setReminderSchedule(event.value)
+                    waterReminder.setSchedule(event.value)
                 }
                 is SettingsScreenEvent.ReminderTimesChanged -> {
                     if (state.value is SettingsScreenState.Success) {
                         val schedule = (state.value as SettingsScreenState.Success).reminderSchedule.copy(times = event.value)
+
                         settingsPreferences.setReminderSchedule(schedule)
+                        waterReminder.setSchedule(schedule)
                     }
                 }
                 is SettingsScreenEvent.ThemeChanged -> {
