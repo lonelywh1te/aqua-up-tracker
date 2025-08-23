@@ -32,4 +32,34 @@
     <string name="submit">Подтвердить</string>
     <string name="water_remind_notification_title1">Время попить воды!</string>
     <string name="water_remind_notification_description1">Выпей стакан воды, чтобы оставаться в тонусе.</string>
+    <string name="water_reminder_notification_title1">Пора сделать глоток</string>
+    <string name="water_reminder_notification_title2">Время освежиться</string>
+    <string name="water_reminder_notification_title3">Напоминание о воде</string>
+    <string name="water_reminder_notification_title4">Останься в тонусе</string>
+    <string name="water_reminder_notification_title5">Глоток для энергии</string>
+    <string name="water_reminder_notification_title6">Время пить: когнитивные функции ждут!</string>
+    <string name="water_reminder_notification_title7">Освежись прямо сейчас</string>
+    <string name="water_reminder_notification_title8">Кто-то забыл про стакан?</string>
+    <string name="water_reminder_notification_title9">Не забывай о воде</string>
+    <string name="water_reminder_notification_title10">Сделай паузу для глотка</string>
+    <string name="water_reminder_notification_title11">Поддержи организм водой</string>
+    <string name="water_reminder_notification_title12">Вода — лучший друг!</string>
+    <string name="water_reminder_notification_title13">Маленький шаг к здоровью</string>
+    <string name="water_reminder_notification_title14">Нужна вода. Сейчас же.</string>
+    <string name="water_reminder_notification_title15">Где отчёт в виде выпитого стакана?</string>
+    <string name="water_reminder_notification_message1">Стакан воды поможет сохранить бодрость</string>
+    <string name="water_reminder_notification_message2">Даже пара глотков улучшат самочувствие.</string>
+    <string name="water_reminder_notification_message3">Твой организм скажет «спасибо».</string>
+    <string name="water_reminder_notification_message4">Гидратация — залог энергии и концентрации.</string>
+    <string name="water_reminder_notification_message5">Немного воды сейчас — больше сил позже.</string>
+    <string name="water_reminder_notification_message6">Сделай паузу, чтобы напомнить телу о заботе.</string>
+    <string name="water_reminder_notification_message7">Усталость уходит вместе с жаждой.</string>
+    <string name="water_reminder_notification_message8">Вода помогает твоему мозгу работать лучше.</string>
+    <string name="water_reminder_notification_message9">Освежи себя — это займет всего пару секунд.</string>
+    <string name="water_reminder_notification_message10">Поддержи здоровье прямо сейчас.</string>
+    <string name="water_reminder_notification_message11">Твои мышцы и кожа ценят воду.</string>
+    <string name="water_reminder_notification_message12">Глоток воды — лучший способ восстановиться.</string>
+    <string name="water_reminder_notification_message13">Достаток воды = хорошее настроение.</string>
+    <string name="water_reminder_notification_message14">Маленький ритуал для большого результата.</string>
+    <string name="water_reminder_notification_message15">Начни с простого: сделай глоток.</string>
 </resources>

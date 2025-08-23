@@ -10,6 +10,6 @@ enum class AquaUpNotificationChannels(
     WaterRemindChannel(
         id = "task_reminder",
         channelName = "Напоминание о воде",
-        importance = NotificationManager.IMPORTANCE_HIGH
+        importance = NotificationManager.IMPORTANCE_MAX
     )
 }

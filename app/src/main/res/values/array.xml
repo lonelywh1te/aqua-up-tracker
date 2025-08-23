@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="water_reminder_titles">
+        <item>@string/water_reminder_notification_title1</item>
+        <item>@string/water_reminder_notification_title2</item>
+        <item>@string/water_reminder_notification_title3</item>
+        <item>@string/water_reminder_notification_title4</item>
+        <item>@string/water_reminder_notification_title5</item>
+        <item>@string/water_reminder_notification_title6</item>
+        <item>@string/water_reminder_notification_title7</item>
+        <item>@string/water_reminder_notification_title8</item>
+        <item>@string/water_reminder_notification_title9</item>
+        <item>@string/water_reminder_notification_title10</item>
+        <item>@string/water_reminder_notification_title11</item>
+        <item>@string/water_reminder_notification_title12</item>
+        <item>@string/water_reminder_notification_title13</item>
+        <item>@string/water_reminder_notification_title14</item>
+        <item>@string/water_reminder_notification_title15</item>
+    </string-array>
+
+    <string-array name="water_reminder_messages">
+        <item>@string/water_reminder_notification_message1</item>
+        <item>@string/water_reminder_notification_message2</item>
+        <item>@string/water_reminder_notification_message3</item>
+        <item>@string/water_reminder_notification_message4</item>
+        <item>@string/water_reminder_notification_message5</item>
+        <item>@string/water_reminder_notification_message6</item>
+        <item>@string/water_reminder_notification_message7</item>
+        <item>@string/water_reminder_notification_message8</item>
+        <item>@string/water_reminder_notification_message9</item>
+        <item>@string/water_reminder_notification_message10</item>
+        <item>@string/water_reminder_notification_message11</item>
+        <item>@string/water_reminder_notification_message12</item>
+        <item>@string/water_reminder_notification_message13</item>
+        <item>@string/water_reminder_notification_message14</item>
+        <item>@string/water_reminder_notification_message15</item>
+    </string-array>
+</resources>

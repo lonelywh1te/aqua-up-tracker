@@ -7,6 +7,7 @@ import org.koin.dsl.module
 import ru.lonelywh1te.aquaup.presentation.history.HistoryViewModel
 import ru.lonelywh1te.aquaup.presentation.home.HomeViewModel
 import ru.lonelywh1te.aquaup.presentation.notification.AppNotificationManager
+import ru.lonelywh1te.aquaup.presentation.notification.content.WaterNotificationContent
 import ru.lonelywh1te.aquaup.presentation.reminder.WaterReminder
 import ru.lonelywh1te.aquaup.presentation.settings.SettingsViewModel
 import ru.lonelywh1te.aquaup.presentation.worker.WaterReminderWorker
@@ -38,7 +39,14 @@ val presentationModule = module {
     }
 
     single<AppNotificationManager> {
-        AppNotificationManager(androidContext())
+        AppNotificationManager(
+            context = androidContext(),
+            waterNotificationContent = get()
+        )
+    }
+
+    factory<WaterNotificationContent> {
+        WaterNotificationContent(androidContext())
     }
 
     single<WaterReminder> {
