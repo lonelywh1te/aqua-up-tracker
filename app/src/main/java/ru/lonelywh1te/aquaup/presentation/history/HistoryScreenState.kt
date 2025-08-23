@@ -2,13 +2,15 @@ package ru.lonelywh1te.aquaup.presentation.history
 
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.WaterLog
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 sealed class HistoryScreenState {
 
     data class Success(
         val waterLogs: List<WaterLog>,
-        val volumeUnit: VolumeUnit
+        val volumeUnit: VolumeUnit,
+        val historyDate: LocalDate,
     ): HistoryScreenState() {
         companion object {
             val preview = HistoryScreenState.Success(
@@ -17,7 +19,8 @@ sealed class HistoryScreenState {
                     WaterLog(amountMl = 150, timestamp = LocalDateTime.now()),
                     WaterLog(amountMl = 9999, timestamp = LocalDateTime.now()),
                 ),
-                volumeUnit = VolumeUnit.Ml
+                volumeUnit = VolumeUnit.Ml,
+                historyDate = LocalDate.now()
             )
         }
     }

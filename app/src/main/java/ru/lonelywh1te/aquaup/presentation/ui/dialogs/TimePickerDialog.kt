@@ -75,6 +75,7 @@ fun TimeInputDialog(
                         onClick = {
                             val confirmedLocalTime = LocalTime.of(timePickerState.hour, timePickerState.minute)
                             onConfirm(confirmedLocalTime)
+                            onDismiss()
                         }
                     ) {
                         Text(text = stringResource(R.string.ok))

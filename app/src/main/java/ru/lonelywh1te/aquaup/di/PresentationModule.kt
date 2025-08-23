@@ -25,7 +25,7 @@ val presentationModule = module {
     viewModel<HistoryViewModel> {
         HistoryViewModel(
             settingsPreferences = get(),
-            getTodayWaterLogsUseCase = get(),
+            getWaterLogsByDateUseCase = get(),
             updateWaterLogUseCase = get(),
             deleteWaterLogUseCase = get(),
         )

@@ -21,7 +21,10 @@ fun <T> SelectableListBottomSheet(
         SelectableList(
             items = items,
             text = text,
-            onItemSelected = onItemSelected
+            onItemSelected = { item ->
+                onItemSelected(item)
+                onDismiss()
+            }
         )
     }
 }

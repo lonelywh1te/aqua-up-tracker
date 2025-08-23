@@ -57,6 +57,7 @@ fun <T> CheckableListBottomSheet(
                     .height(56.dp),
                 onClick = {
                     onConfirm(checkedItems)
+                    onDismiss()
                 }
             ) {
                 Text(stringResource(R.string.submit))

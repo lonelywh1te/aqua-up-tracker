@@ -93,7 +93,12 @@ fun NumberInputDialog(
                     TextButton(onClick = { onDismiss() }) {
                         Text(text = stringResource(R.string.cancel))
                     }
-                    TextButton(onClick = { onConfirm(fieldValue.toIntOrNull() ?: 0) },) {
+                    TextButton(
+                        onClick = {
+                            onConfirm(fieldValue.toIntOrNull() ?: 0)
+                            onDismiss()
+                        }
+                    ) {
                         Text(text = stringResource(R.string.ok))
                     }
                 }

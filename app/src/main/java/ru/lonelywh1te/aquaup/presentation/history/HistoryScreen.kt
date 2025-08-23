@@ -48,11 +48,13 @@ import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.WaterLog
 import ru.lonelywh1te.aquaup.presentation.ui.components.AppSection
 import ru.lonelywh1te.aquaup.presentation.ui.components.ValueListItem
+import ru.lonelywh1te.aquaup.presentation.ui.dialogs.CustomDatePickerDialog
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.TimeInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 import ru.lonelywh1te.aquaup.presentation.ui.utils.valueStringRes
 import ru.lonelywh1te.aquaup.presentation.ui.utils.toStringFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
@@ -70,6 +72,7 @@ fun HistoryScreen(
                 modifier = modifier,
                 waterLogs = successState.waterLogs,
                 volumeUnit = successState.volumeUnit,
+                historyDate = successState.historyDate,
                 onEvent = viewModel::onEvent
             )
         }
@@ -79,14 +82,17 @@ fun HistoryScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryContent(
     modifier: Modifier = Modifier,
+    historyDate: LocalDate,
     waterLogs: List<WaterLog>,
     volumeUnit: VolumeUnit,
     onEvent: (HistoryScreenEvent) -> Unit,
 ) {
     var editWaterLog by remember { mutableStateOf<WaterLog?>(null) }
+    var showHistoryDatePicker by remember { mutableStateOf(false)}
 
     Column(
         modifier = modifier
@@ -94,7 +100,11 @@ fun HistoryContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        AppSection(title = stringResource(R.string.history)) {
+        AppSection(
+            title = stringResource(R.string.history),
+            value = historyDate.toStringFormat(),
+            onValueClick = { showHistoryDatePicker = true }
+        ) {
             HistoryList(
                 list = waterLogs,
                 volumeUnit = stringResource(volumeUnit.valueStringRes()),
@@ -110,14 +120,23 @@ fun HistoryContent(
                 volumeUnit = volumeUnit,
                 onSave = { waterLog ->
                     onEvent(HistoryScreenEvent.WaterLogChanged(waterLog))
-                    editWaterLog = null
                 },
                 onDelete = { waterLog ->
                     onEvent(HistoryScreenEvent.WaterLogDeleted(waterLog))
-                    editWaterLog = null
                 },
                 onDismiss = {
                     editWaterLog = null
+                }
+            )
+        }
+
+        if (showHistoryDatePicker) {
+            CustomDatePickerDialog(
+                onDateSelected = {
+                    onEvent(HistoryScreenEvent.HistoryDateChanged(it))
+                },
+                onDismiss = {
+                    showHistoryDatePicker = false
                 }
             )
         }
@@ -154,6 +173,7 @@ fun WaterLogEditorBottomSheet(
     )
 
     var editedWaterLog by remember { mutableStateOf(waterLog) }
+
     var isWaterInputDialogVisible by remember { mutableStateOf(false) }
     var isTimeInputDialogVisible by remember { mutableStateOf(false) }
 
@@ -196,7 +216,10 @@ fun WaterLogEditorBottomSheet(
                         contentColor = MaterialTheme.colorScheme.onError,
                     ),
                     modifier = Modifier.size(56.dp),
-                    onClick = { onDelete(editedWaterLog) }
+                    onClick = {
+                        onDelete(editedWaterLog)
+                        onDismiss()
+                    }
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_delete),
@@ -210,7 +233,11 @@ fun WaterLogEditorBottomSheet(
                     modifier = Modifier
                         .weight(1f)
                         .height(56.dp),
-                    onClick = { onSave(editedWaterLog) }) {
+                    onClick = {
+                        onSave(editedWaterLog)
+                        onDismiss()
+                    }
+                ) {
                     Text("Сохранить")
                 }
             }
@@ -249,10 +276,6 @@ fun WaterLogEditorBottomSheet(
         }
     }
 }
-
-
-
-
 
 
 @Composable
@@ -346,6 +369,7 @@ private fun HistoryScreenPreview() {
                     .padding(innerPadding),
                 waterLogs = state.waterLogs,
                 volumeUnit = state.volumeUnit,
+                historyDate = state.historyDate,
                 onEvent = { }
             )
         }
