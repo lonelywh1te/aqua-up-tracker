@@ -10,18 +10,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import org.koin.compose.koinInject
+import org.koin.android.ext.android.inject
 import ru.lonelywh1te.aquaup.domain.model.settings.AppTheme
 import ru.lonelywh1te.aquaup.domain.storage.SettingsPreferences
+import ru.lonelywh1te.aquaup.presentation.main.MainScreen
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
 
         setContent {
-            val settingsPreferences = koinInject<SettingsPreferences>()
+            val settingsPreferences by inject<SettingsPreferences>()
             val theme by settingsPreferences.themeFlow.collectAsState(AppTheme.System)
 
             AquaUpTheme(theme) {

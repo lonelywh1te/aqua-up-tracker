@@ -7,7 +7,6 @@ import ru.lonelywh1te.aquaup.domain.model.WaterLog
 import ru.lonelywh1te.aquaup.domain.repository.WaterLogRepository
 import java.time.LocalDateTime
 
-
 class WaterLogRepositoryImpl(
     private val waterLogDao: WaterLogDao,
 ): WaterLogRepository {

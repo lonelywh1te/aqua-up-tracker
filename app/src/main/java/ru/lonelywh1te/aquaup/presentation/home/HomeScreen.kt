@@ -43,7 +43,6 @@ import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 import ru.lonelywh1te.aquaup.presentation.ui.utils.valueStringRes
-import kotlin.math.roundToInt
 
 @Composable
 fun HomeScreen(
@@ -62,6 +61,7 @@ fun HomeScreen(
                 waterAmount = successState.waterAmount,
                 volumeUnit = successState.volumeUnit,
                 recentWaterVolumes = successState.recentWaterVolumes,
+                progressPercentage = successState.progressPercentage,
                 onEvent = viewModel::onEvent
             )
         }
@@ -81,6 +81,7 @@ private fun HomeContent(
     volumeUnit: VolumeUnit,
     waterAmount: Int,
     recentWaterVolumes: List<Int>,
+    progressPercentage: Int,
     onEvent: (HomeScreenEvent) -> Unit
 ) {
     var isWaterInputDialogVisible by remember { mutableStateOf(false) }
@@ -95,7 +96,7 @@ private fun HomeContent(
         HomeProgressOverview(
             waterGoal = waterGoal,
             volumeUnit = stringResource(volumeUnit.valueStringRes()),
-            progressPercentage = if (waterGoal != 0) ((waterAmount.toFloat() / waterGoal) * 100).roundToInt() else 0
+            progressPercentage = progressPercentage
         )
 
         HomeCurrentWaterProgress(
@@ -220,6 +221,7 @@ private fun WaterVolumeButton(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
             contentColor = MaterialTheme.colorScheme.onSurface
         ),
+        elevation = ButtonDefaults.elevatedButtonElevation(),
         onClick = { onClick(volume) },
     ) {
         Column(
@@ -251,6 +253,7 @@ private fun AddWaterButton(
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
+        elevation = ButtonDefaults.elevatedButtonElevation(),
         onClick = onAddWaterClick,
 
     ) {
@@ -287,6 +290,7 @@ private fun HomeContentPreview() {
                 waterAmount = state.waterAmount,
                 volumeUnit = state.volumeUnit,
                 recentWaterVolumes = state.recentWaterVolumes,
+                progressPercentage = state.progressPercentage,
                 onEvent = {  }
             )
         }

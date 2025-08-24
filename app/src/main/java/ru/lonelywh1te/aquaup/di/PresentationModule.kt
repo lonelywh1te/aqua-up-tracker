@@ -6,6 +6,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.lonelywh1te.aquaup.presentation.history.HistoryViewModel
 import ru.lonelywh1te.aquaup.presentation.home.HomeViewModel
+import ru.lonelywh1te.aquaup.presentation.main.MainViewModel
 import ru.lonelywh1te.aquaup.presentation.notification.AppNotificationManager
 import ru.lonelywh1te.aquaup.presentation.notification.content.WaterNotificationContent
 import ru.lonelywh1te.aquaup.presentation.reminder.WaterReminder
@@ -35,6 +36,13 @@ val presentationModule = module {
         SettingsViewModel(
             settingsPreferences = get(),
             waterReminder = get(),
+        )
+    }
+
+    viewModel<MainViewModel> {
+        MainViewModel(
+            settingsPreferences = get(),
+            getWaterLogsByDateUseCase = get(),
         )
     }
 
