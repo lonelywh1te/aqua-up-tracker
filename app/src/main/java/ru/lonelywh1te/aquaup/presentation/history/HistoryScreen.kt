@@ -44,16 +44,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
 import ru.lonelywh1te.aquaup.R
-import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.WaterLog
+import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.presentation.ui.components.AppSection
 import ru.lonelywh1te.aquaup.presentation.ui.components.ValueListItem
+import ru.lonelywh1te.aquaup.presentation.ui.components.charts.BarChart
+import ru.lonelywh1te.aquaup.presentation.ui.components.charts.BarChartData
+import ru.lonelywh1te.aquaup.presentation.ui.components.charts.BarChartEntry
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.CustomDatePickerDialog
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.TimeInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
-import ru.lonelywh1te.aquaup.presentation.ui.utils.valueStringRes
 import ru.lonelywh1te.aquaup.presentation.ui.utils.toStringFormat
+import ru.lonelywh1te.aquaup.presentation.ui.utils.valueStringRes
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -100,6 +103,33 @@ fun HistoryContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+        AppSection(
+            title = "График",
+            value = historyDate.toStringFormat()
+        ) {
+            // TODO: real data
+
+            BarChart(
+                modifier = Modifier
+                    .height(300.dp),
+                barChartData = BarChartData(
+                    data = listOf(
+                        BarChartEntry("пн", 500f),
+                        BarChartEntry("вт", 700f),
+                        BarChartEntry("ср", 2000f),
+                        BarChartEntry("чт", 500f),
+                        BarChartEntry("пт", 500f),
+                        BarChartEntry("сб", 500f),
+                        BarChartEntry("вс", 500f),
+                    )
+                ),
+                target = 1800f,
+                barCornerRadius = 16.dp,
+                barColor = MaterialTheme.colorScheme.inversePrimary,
+                textStyle = MaterialTheme.typography.labelSmall,
+            )
+        }
+
         AppSection(
             title = stringResource(R.string.history),
             value = historyDate.toStringFormat(),
