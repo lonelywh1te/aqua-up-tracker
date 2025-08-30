@@ -48,9 +48,9 @@ import ru.lonelywh1te.aquaup.domain.model.WaterLog
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.presentation.ui.components.AppSection
 import ru.lonelywh1te.aquaup.presentation.ui.components.ValueListItem
-import ru.lonelywh1te.aquaup.presentation.ui.components.charts.BarChart
-import ru.lonelywh1te.aquaup.presentation.ui.components.charts.BarChartData
-import ru.lonelywh1te.aquaup.presentation.ui.components.charts.BarChartEntry
+import ru.lonelywh1te.aquaup.presentation.ui.components.charts.barchart.BarChart
+import ru.lonelywh1te.aquaup.presentation.ui.components.charts.barchart.BarChartEntry
+import ru.lonelywh1te.aquaup.presentation.ui.components.charts.barchart.BarChartStyle
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.CustomDatePickerDialog
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.TimeInputDialog
@@ -97,6 +97,16 @@ fun HistoryContent(
     var editWaterLog by remember { mutableStateOf<WaterLog?>(null) }
     var showHistoryDatePicker by remember { mutableStateOf(false)}
 
+    var data by remember { mutableStateOf(listOf(
+        BarChartEntry("пн", 500f),
+        BarChartEntry("вт", 700f),
+        BarChartEntry("ср", 2000f),
+        BarChartEntry("чт", 500f),
+        BarChartEntry("пт", 500f),
+        BarChartEntry("сб", 500f),
+        BarChartEntry("вс", 500f),
+    )) }
+
     Column(
         modifier = modifier
             .padding(horizontal = dimensionResource(R.dimen.screen_padding))
@@ -105,28 +115,32 @@ fun HistoryContent(
     ) {
         AppSection(
             title = "График",
-            value = historyDate.toStringFormat()
+            value = "Тест",
+            onValueClick = {
+                data = listOf(
+                    BarChartEntry("пн", 500f),
+                    BarChartEntry("вт", 700f),
+                    BarChartEntry("ср", 1500f),
+                    BarChartEntry("чт", 500f),
+                    BarChartEntry("пт", 500f),
+                    BarChartEntry("сб", 500f),
+                    BarChartEntry("вс", 500f),
+                )
+            }
         ) {
-            // TODO: real data
-
             BarChart(
                 modifier = Modifier
                     .height(300.dp),
-                barChartData = BarChartData(
-                    data = listOf(
-                        BarChartEntry("пн", 500f),
-                        BarChartEntry("вт", 700f),
-                        BarChartEntry("ср", 2000f),
-                        BarChartEntry("чт", 500f),
-                        BarChartEntry("пт", 500f),
-                        BarChartEntry("сб", 500f),
-                        BarChartEntry("вс", 500f),
-                    )
-                ),
-                target = 1800f,
-                barCornerRadius = 16.dp,
-                barColor = MaterialTheme.colorScheme.inversePrimary,
-                textStyle = MaterialTheme.typography.labelSmall,
+                data = data,
+                style = BarChartStyle.default.copy(
+                    barColor = MaterialTheme.colorScheme.inversePrimary,
+                    barCornerRadius = 16.dp,
+                    textStyle = MaterialTheme.typography.labelSmall,
+                    textColor = MaterialTheme.colorScheme.onSurface,
+                    axisColor = MaterialTheme.colorScheme.onSurface,
+                    gridColor = MaterialTheme.colorScheme.surfaceVariant,
+                    targetColor = MaterialTheme.colorScheme.tertiary
+                )
             )
         }
 
