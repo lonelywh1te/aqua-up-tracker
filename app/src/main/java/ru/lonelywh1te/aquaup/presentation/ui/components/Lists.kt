@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ru.lonelywh1te.aquaup.domain.model.settings.AppTheme
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
-import ru.lonelywh1te.aquaup.presentation.ui.utils.toStringFormat
+import ru.lonelywh1te.aquaup.presentation.ui.utils.toRelativeDateString
 import ru.lonelywh1te.aquaup.presentation.ui.utils.valueStringRes
 import java.time.LocalTime
 
@@ -94,7 +94,7 @@ private fun CheckableListPreview() {
                 LocalTime.now().minusHours(2),
             ),
             checkedItems = listOf(LocalTime.now().minusHours(2)),
-            text = { it.toStringFormat() }
+            text = { it.toRelativeDateString() }
         )
     }
 }

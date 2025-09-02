@@ -4,7 +4,7 @@ import android.util.Log
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-fun LocalTime.toStringFormat(): String {
+fun LocalTime.toRelativeDateString(): String {
     return this.format(DateTimeFormatter.ofPattern("HH:mm"))
 }
 

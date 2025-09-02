@@ -7,4 +7,9 @@ sealed class HistoryScreenEvent {
     data class WaterLogChanged(val waterLog: WaterLog): HistoryScreenEvent()
     data class WaterLogDeleted(val waterLog: WaterLog): HistoryScreenEvent()
     data class HistoryDateChanged(val date: LocalDate): HistoryScreenEvent()
+
+    data object SetChartPreviousWeek: HistoryScreenEvent()
+
+    data object SetChartNextWeek: HistoryScreenEvent()
+
 }

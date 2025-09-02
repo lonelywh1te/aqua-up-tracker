@@ -16,7 +16,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,35 +28,39 @@ fun AppSection(
     title: String? = null,
     value: String? = null,
     onValueClick: (() -> Unit)? = null,
+    headerContent: (@Composable () -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     Column(modifier = modifier) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            title?.let {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(vertical = dimensionResource(R.dimen.base_spacing))
-                )
-            }
-
-            value?.let {
-                TextButton(
-                    contentPadding = PaddingValues(vertical = dimensionResource(R.dimen.base_spacing), horizontal = 0.dp),
-                    onClick = { onValueClick?.invoke() }
-                ) {
+        if (headerContent != null) {
+            headerContent()
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                title?.let {
                     Text(
-                        text = value,
+                        text = title,
                         style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(vertical = dimensionResource(R.dimen.base_spacing))
                     )
                 }
-            }
 
+                value?.let {
+                    TextButton(
+                        contentPadding = PaddingValues(vertical = dimensionResource(R.dimen.base_spacing), horizontal = 0.dp),
+                        onClick = { onValueClick?.invoke() }
+                    ) {
+                        Text(
+                            text = value,
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    }
+                }
+            }
         }
 
         Surface(

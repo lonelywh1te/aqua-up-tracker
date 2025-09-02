@@ -9,6 +9,7 @@ import ru.lonelywh1te.aquaup.domain.usecase.AddWaterUseCase
 import ru.lonelywh1te.aquaup.domain.usecase.DeleteWaterLogUseCase
 import ru.lonelywh1te.aquaup.domain.usecase.GetTodayWaterLogsUseCase
 import ru.lonelywh1te.aquaup.domain.usecase.GetWaterLogsByDateUseCase
+import ru.lonelywh1te.aquaup.domain.usecase.GetWeeklyWaterLogsUseCase
 import ru.lonelywh1te.aquaup.domain.usecase.UpdateWaterLogUseCase
 
 val domainModule = module {
@@ -34,6 +35,12 @@ val domainModule = module {
         GetWaterLogsByDateUseCase(
             settingsPreferences = get(),
             waterLogRepository = get()
+        )
+    }
+
+    factory<GetWeeklyWaterLogsUseCase> {
+        GetWeeklyWaterLogsUseCase(
+            waterLogRepository = get(),
         )
     }
 

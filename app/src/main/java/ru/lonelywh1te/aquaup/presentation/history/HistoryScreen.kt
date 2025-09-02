@@ -1,6 +1,7 @@
 package ru.lonelywh1te.aquaup.presentation.history
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -46,16 +47,20 @@ import org.koin.androidx.compose.koinViewModel
 import ru.lonelywh1te.aquaup.R
 import ru.lonelywh1te.aquaup.domain.model.WaterLog
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
+import ru.lonelywh1te.aquaup.domain.model.settings.WaterGoal
+import ru.lonelywh1te.aquaup.presentation.home.HomeScreenEvent
 import ru.lonelywh1te.aquaup.presentation.ui.components.AppSection
 import ru.lonelywh1te.aquaup.presentation.ui.components.ValueListItem
 import ru.lonelywh1te.aquaup.presentation.ui.components.charts.barchart.BarChart
+import ru.lonelywh1te.aquaup.presentation.ui.components.charts.barchart.BarChartConfig
 import ru.lonelywh1te.aquaup.presentation.ui.components.charts.barchart.BarChartEntry
 import ru.lonelywh1te.aquaup.presentation.ui.components.charts.barchart.BarChartStyle
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.CustomDatePickerDialog
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.TimeInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
-import ru.lonelywh1te.aquaup.presentation.ui.utils.toStringFormat
+import ru.lonelywh1te.aquaup.presentation.ui.utils.toDateString
+import ru.lonelywh1te.aquaup.presentation.ui.utils.toRelativeDateString
 import ru.lonelywh1te.aquaup.presentation.ui.utils.valueStringRes
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -76,6 +81,9 @@ fun HistoryScreen(
                 waterLogs = successState.waterLogs,
                 volumeUnit = successState.volumeUnit,
                 historyDate = successState.historyDate,
+                waterGoal = successState.waterGoal,
+                weekStart = successState.weekStart,
+                chartData = successState.chartData,
                 onEvent = viewModel::onEvent
             )
         }
@@ -92,20 +100,13 @@ fun HistoryContent(
     historyDate: LocalDate,
     waterLogs: List<WaterLog>,
     volumeUnit: VolumeUnit,
+    waterGoal: WaterGoal,
+    weekStart: LocalDate,
+    chartData: List<BarChartEntry>,
     onEvent: (HistoryScreenEvent) -> Unit,
 ) {
     var editWaterLog by remember { mutableStateOf<WaterLog?>(null) }
     var showHistoryDatePicker by remember { mutableStateOf(false)}
-
-    var data by remember { mutableStateOf(listOf(
-        BarChartEntry("пн", 500f),
-        BarChartEntry("вт", 700f),
-        BarChartEntry("ср", 2000f),
-        BarChartEntry("чт", 500f),
-        BarChartEntry("пт", 500f),
-        BarChartEntry("сб", 500f),
-        BarChartEntry("вс", 500f),
-    )) }
 
     Column(
         modifier = modifier
@@ -114,24 +115,31 @@ fun HistoryContent(
             .verticalScroll(rememberScrollState())
     ) {
         AppSection(
-            title = "График",
-            value = "Тест",
-            onValueClick = {
-                data = listOf(
-                    BarChartEntry("пн", 500f),
-                    BarChartEntry("вт", 700f),
-                    BarChartEntry("ср", 1500f),
-                    BarChartEntry("чт", 500f),
-                    BarChartEntry("пт", 500f),
-                    BarChartEntry("сб", 500f),
-                    BarChartEntry("вс", 500f),
-                )
-            }
+            headerContent = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(onClick = { onEvent(HistoryScreenEvent.SetChartPreviousWeek) }) {
+                        Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_left), contentDescription = null)
+                    }
+
+                    Text("${weekStart.toDateString()} - ${weekStart.plusDays(6).toDateString()}")
+
+                    IconButton(onClick = { onEvent(HistoryScreenEvent.SetChartNextWeek) }) {
+                        Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_right), contentDescription = null)
+                    }
+                }
+            },
         ) {
             BarChart(
                 modifier = Modifier
                     .height(300.dp),
-                data = data,
+                data = chartData,
+                config = BarChartConfig(
+                    target = waterGoal.value.toFloat()
+                ),
                 style = BarChartStyle.default.copy(
                     barColor = MaterialTheme.colorScheme.inversePrimary,
                     barCornerRadius = 16.dp,
@@ -146,7 +154,7 @@ fun HistoryContent(
 
         AppSection(
             title = stringResource(R.string.history),
-            value = historyDate.toStringFormat(),
+            value = historyDate.toRelativeDateString(),
             onValueClick = { showHistoryDatePicker = true }
         ) {
             HistoryList(
@@ -242,7 +250,7 @@ fun WaterLogEditorBottomSheet(
 
                     ValueListItem(
                         label = "Время",
-                        value = editedWaterLog.timestamp.toLocalTime().toStringFormat(),
+                        value = editedWaterLog.timestamp.toLocalTime().toRelativeDateString(),
                         onClick = { isTimeInputDialogVisible = true }
                     )
                 }
@@ -372,7 +380,7 @@ fun HistoryItem(
 
         Column(modifier = Modifier.weight(1f)) {
             Text(text = "$volume $volumeUnit")
-            Text(modifier = Modifier.alpha(0.5f), text = time.toStringFormat())
+            Text(modifier = Modifier.alpha(0.5f), text = time.toRelativeDateString())
         }
 
         IconButton(
@@ -414,7 +422,10 @@ private fun HistoryScreenPreview() {
                 waterLogs = state.waterLogs,
                 volumeUnit = state.volumeUnit,
                 historyDate = state.historyDate,
-                onEvent = { }
+                waterGoal = state.waterGoal,
+                weekStart = state.weekStart,
+                chartData = state.chartData,
+                onEvent = { },
             )
         }
     }

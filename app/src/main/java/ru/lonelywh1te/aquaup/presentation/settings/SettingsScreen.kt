@@ -31,7 +31,6 @@ import ru.lonelywh1te.aquaup.domain.model.settings.WaterGoal
 import ru.lonelywh1te.aquaup.presentation.navigation.SettingsDestination
 import ru.lonelywh1te.aquaup.presentation.settings.SettingsScreenEvent.*
 import ru.lonelywh1te.aquaup.presentation.ui.components.AppSection
-import ru.lonelywh1te.aquaup.presentation.ui.components.CheckableList
 import ru.lonelywh1te.aquaup.presentation.ui.components.CheckableListBottomSheet
 import ru.lonelywh1te.aquaup.presentation.ui.components.ListItem
 import ru.lonelywh1te.aquaup.presentation.ui.components.ValueListItem
@@ -40,7 +39,7 @@ import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 import ru.lonelywh1te.aquaup.presentation.ui.utils.getAppVersion
 import ru.lonelywh1te.aquaup.presentation.ui.utils.stringRes
-import ru.lonelywh1te.aquaup.presentation.ui.utils.toStringFormat
+import ru.lonelywh1te.aquaup.presentation.ui.utils.toRelativeDateString
 import ru.lonelywh1te.aquaup.presentation.ui.utils.valueStringRes
 import java.time.LocalTime
 
@@ -128,7 +127,7 @@ fun SettingsContent(
             CheckableListBottomSheet(
                 items = (0..23).map { LocalTime.of(it, 0) },
                 checkedItems = state.reminderSchedule.times,
-                text = { it.toStringFormat() },
+                text = { it.toRelativeDateString() },
                 onConfirm = { times ->
                     Log.d("SettingsScreen", times.toString())
                     onEvent(ReminderTimesChanged(times))

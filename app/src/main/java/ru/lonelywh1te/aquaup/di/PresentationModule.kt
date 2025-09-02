@@ -12,6 +12,7 @@ import ru.lonelywh1te.aquaup.presentation.notification.content.WaterNotification
 import ru.lonelywh1te.aquaup.presentation.reminder.WaterReminder
 import ru.lonelywh1te.aquaup.presentation.settings.SettingsViewModel
 import ru.lonelywh1te.aquaup.presentation.worker.WaterReminderWorker
+import java.util.Locale
 
 val presentationModule = module {
 
@@ -26,9 +27,11 @@ val presentationModule = module {
     viewModel<HistoryViewModel> {
         HistoryViewModel(
             settingsPreferences = get(),
+            getWeeklyWaterLogsUseCase = get(),
             getWaterLogsByDateUseCase = get(),
             updateWaterLogUseCase = get(),
             deleteWaterLogUseCase = get(),
+            locale = get(),
         )
     }
 
@@ -55,6 +58,10 @@ val presentationModule = module {
 
     factory<WaterNotificationContent> {
         WaterNotificationContent(androidContext())
+    }
+
+    factory<Locale> {
+        Locale.getDefault()
     }
 
     single<WaterReminder> {
