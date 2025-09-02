@@ -3,6 +3,7 @@ package ru.lonelywh1te.aquaup.domain.usecase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import ru.lonelywh1te.aquaup.domain.model.WaterLog
+import ru.lonelywh1te.aquaup.domain.model.convertToUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.convertMlToOz
 import ru.lonelywh1te.aquaup.domain.repository.WaterLogRepository
@@ -21,12 +22,9 @@ class GetTodayWaterLogsUseCase(
             waterLogRepository.getWaterLogsForPeriod(start, end),
             settingsPreferences.volumeUnitFlow
         ) { waterLogs, volumeUnit ->
-            waterLogs.sortedByDescending { it.timestamp }.map { waterLog ->
-                when (volumeUnit) {
-                    VolumeUnit.Ml -> waterLog.copy(amountMl = waterLog.amountMl)
-                    VolumeUnit.Oz -> waterLog.copy(amountMl = convertMlToOz(waterLog.amountMl))
-                }
-            }
+            waterLogs
+                .convertToUnit(volumeUnit)
+                .sortedByDescending { it.timestamp }
         }
     }
 }

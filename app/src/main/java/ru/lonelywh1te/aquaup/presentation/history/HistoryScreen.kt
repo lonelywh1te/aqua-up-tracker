@@ -138,7 +138,8 @@ fun HistoryContent(
                     .height(300.dp),
                 data = chartData,
                 config = BarChartConfig(
-                    target = waterGoal.value.toFloat()
+                    target = waterGoal.value.toFloat(),
+                    customMaxY = waterGoal.value.toFloat(),
                 ),
                 style = BarChartStyle.default.copy(
                     barColor = MaterialTheme.colorScheme.inversePrimary,

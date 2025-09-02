@@ -40,6 +40,7 @@ val domainModule = module {
 
     factory<GetWeeklyWaterLogsUseCase> {
         GetWeeklyWaterLogsUseCase(
+            settingsPreferences = get(),
             waterLogRepository = get(),
         )
     }

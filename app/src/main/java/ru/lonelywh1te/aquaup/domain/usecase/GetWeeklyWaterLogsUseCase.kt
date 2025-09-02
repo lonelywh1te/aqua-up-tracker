@@ -1,22 +1,32 @@
 package ru.lonelywh1te.aquaup.domain.usecase
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import ru.lonelywh1te.aquaup.domain.model.WaterLog
+import ru.lonelywh1te.aquaup.domain.model.convertToUnit
+import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
+import ru.lonelywh1te.aquaup.domain.model.settings.convertMlToOz
 import ru.lonelywh1te.aquaup.domain.repository.WaterLogRepository
+import ru.lonelywh1te.aquaup.domain.storage.SettingsPreferences
 import java.time.LocalDate
 
 class GetWeeklyWaterLogsUseCase(
     private val waterLogRepository: WaterLogRepository,
+    private val settingsPreferences: SettingsPreferences,
 ) {
     operator fun invoke(weekStart: LocalDate): Flow<Map<LocalDate, List<WaterLog>>> {
         val start = weekStart.atStartOfDay()
         val end = weekStart.plusDays(6).atStartOfDay()
 
-        return waterLogRepository.getWaterLogsForPeriod(start, end)
-            .map { waterLogs ->
-                waterLogs.groupByDateWithEmptyDays(weekStart)
-            }
+        return combine(
+            waterLogRepository.getWaterLogsForPeriod(start, end),
+            settingsPreferences.volumeUnitFlow
+        ) { waterLogs, volumeUnit ->
+            waterLogs
+                .convertToUnit(volumeUnit)
+                .groupByDateWithEmptyDays(weekStart)
+        }
     }
 
     private fun List<WaterLog>.groupByDateWithEmptyDays(weekStart: LocalDate): Map<LocalDate, List<WaterLog>> {
