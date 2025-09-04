@@ -41,6 +41,8 @@ import org.koin.androidx.compose.koinViewModel
 import ru.lonelywh1te.aquaup.R
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
+import ru.lonelywh1te.aquaup.presentation.ui.screens.DefaultErrorScreen
+import ru.lonelywh1te.aquaup.presentation.ui.screens.DefaultLoadingScreen
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 import ru.lonelywh1te.aquaup.presentation.ui.utils.valueStringRes
 
@@ -69,7 +71,10 @@ fun HomeScreen(
         is HomeScreenState.Loading -> HomeLoading(modifier)
 
         is HomeScreenState.Error -> {
-            /* TODO */
+            HomeError(
+                state = state as HomeScreenState.Error,
+                modifier = modifier
+            )
         }
     }
 }
@@ -133,12 +138,19 @@ private fun HomeContent(
 
 @Composable
 private fun HomeLoading(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
+    DefaultLoadingScreen(modifier)
+}
+
+@Composable
+private fun HomeError(
+    state: HomeScreenState.Error,
+    modifier: Modifier = Modifier
+) {
+    DefaultErrorScreen(
+        message = stringResource(state.messageStringRes),
+        details = state.exceptionDetails,
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -303,6 +315,21 @@ private fun HomeLoadingPreview() {
     AquaUpTheme {
         Scaffold { innerPadding ->
             HomeLoading(modifier = Modifier.padding(innerPadding))
+        }
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun HomeErrorPreview() {
+    AquaUpTheme {
+        Scaffold { innerPadding ->
+            val state = HomeScreenState.Error.preview
+
+            HomeError(
+                state = state,
+                modifier = Modifier.padding(innerPadding)
+            )
         }
     }
 }

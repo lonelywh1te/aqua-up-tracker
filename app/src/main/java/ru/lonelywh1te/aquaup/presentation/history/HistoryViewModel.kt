@@ -11,12 +11,15 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import ru.lonelywh1te.aquaup.domain.result.combineResult
+import ru.lonelywh1te.aquaup.domain.result.handle
 import ru.lonelywh1te.aquaup.domain.storage.SettingsPreferences
 import ru.lonelywh1te.aquaup.domain.usecase.DeleteWaterLogUseCase
 import ru.lonelywh1te.aquaup.domain.usecase.GetWaterLogsByDateUseCase
 import ru.lonelywh1te.aquaup.domain.usecase.GetWeeklyWaterLogsUseCase
 import ru.lonelywh1te.aquaup.domain.usecase.UpdateWaterLogUseCase
 import ru.lonelywh1te.aquaup.presentation.ui.components.charts.barchart.BarChartEntry
+import ru.lonelywh1te.aquaup.presentation.ui.utils.asStringRes
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -39,19 +42,26 @@ class HistoryViewModel(
         weekStart.flatMapLatest { getWeeklyWaterLogsUseCase(it) },
         settingsPreferences.volumeUnitFlow,
         settingsPreferences.waterGoalFlow,
-    ) { waterLogs, weeklyWaterLogs, volumeUnit, waterGoal ->
-        HistoryScreenState.Success(
-            waterLogs = waterLogs,
-            volumeUnit = volumeUnit,
-            historyDate = historyDate.value,
-            waterGoal = waterGoal,
-            weekStart = weekStart.value,
-            chartData = weeklyWaterLogs.map { (date, logs) ->
-                BarChartEntry(
-                    x = date.atStartOfDay().dayOfWeek.getDisplayName(TextStyle.SHORT_STANDALONE, locale),
-                    y = logs.sumOf { it.amountMl }.toFloat()
-                )
-            }
+    ) { waterLogsResult, weeklyWaterLogsResult, volumeUnit, waterGoal ->
+
+        combineResult(waterLogsResult, weeklyWaterLogsResult) { waterLogs, weeklyWaterLogs ->
+            HistoryScreenState.Success(
+                waterLogs = waterLogs,
+                volumeUnit = volumeUnit,
+                historyDate = historyDate.value,
+                waterGoal = waterGoal,
+                weekStart = weekStart.value,
+                chartData = weeklyWaterLogs.map { (date, logs) ->
+                    BarChartEntry(
+                        x = date.atStartOfDay().dayOfWeek.getDisplayName(TextStyle.SHORT_STANDALONE, locale),
+                        y = logs.sumOf { it.amountMl }.toFloat()
+                    )
+                }
+            )
+        }.handle(
+            onSuccess = { it },
+            onLoading = { HistoryScreenState.Loading },
+            onFailure = { HistoryScreenState.Error(it.asStringRes(), it.e.message) }
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), HistoryScreenState.Loading)
 

@@ -1,6 +1,10 @@
 package ru.lonelywh1te.aquaup.presentation.home
 
+import androidx.annotation.StringRes
+import okio.IOException
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
+import ru.lonelywh1te.aquaup.domain.result.AppError
+import ru.lonelywh1te.aquaup.presentation.ui.utils.asStringRes
 import kotlin.math.roundToInt
 
 
@@ -25,7 +29,17 @@ sealed class HomeScreenState {
 
     data object Loading: HomeScreenState()
 
-    data class Error(val message: String): HomeScreenState()
+    data class Error(
+        @StringRes val messageStringRes: Int,
+        val exceptionDetails: String? = null
+    ): HomeScreenState() {
+        companion object {
+            val preview = HomeScreenState.Error(
+                messageStringRes = AppError.Unknown(IOException()).asStringRes(),
+                exceptionDetails = IOException().message
+            )
+        }
+    }
 
 
 }

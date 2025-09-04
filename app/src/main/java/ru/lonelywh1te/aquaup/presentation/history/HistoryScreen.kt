@@ -49,6 +49,7 @@ import ru.lonelywh1te.aquaup.domain.model.WaterLog
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.WaterGoal
 import ru.lonelywh1te.aquaup.presentation.home.HomeScreenEvent
+import ru.lonelywh1te.aquaup.presentation.home.HomeScreenState
 import ru.lonelywh1te.aquaup.presentation.ui.components.AppSection
 import ru.lonelywh1te.aquaup.presentation.ui.components.ValueListItem
 import ru.lonelywh1te.aquaup.presentation.ui.components.charts.barchart.BarChart
@@ -58,6 +59,8 @@ import ru.lonelywh1te.aquaup.presentation.ui.components.charts.barchart.BarChart
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.CustomDatePickerDialog
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.NumberInputDialog
 import ru.lonelywh1te.aquaup.presentation.ui.dialogs.TimeInputDialog
+import ru.lonelywh1te.aquaup.presentation.ui.screens.DefaultErrorScreen
+import ru.lonelywh1te.aquaup.presentation.ui.screens.DefaultLoadingScreen
 import ru.lonelywh1te.aquaup.presentation.ui.theme.AquaUpTheme
 import ru.lonelywh1te.aquaup.presentation.ui.utils.toDateString
 import ru.lonelywh1te.aquaup.presentation.ui.utils.toRelativeDateString
@@ -89,7 +92,12 @@ fun HistoryScreen(
         }
 
         is HistoryScreenState.Loading -> HistoryLoading()
-        is HistoryScreenState.Error -> TODO()
+        is HistoryScreenState.Error -> {
+            HistoryError(
+                state = state as HistoryScreenState.Error,
+                modifier = modifier
+            )
+        }
     }
 }
 
@@ -202,12 +210,19 @@ fun HistoryContent(
 fun HistoryLoading(
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
+    DefaultLoadingScreen(modifier)
+}
+
+@Composable
+fun HistoryError(
+    state: HistoryScreenState.Error,
+    modifier: Modifier = Modifier,
+) {
+    DefaultErrorScreen(
+        message = stringResource(state.messageStringRes),
+        details = state.exceptionDetails,
+        modifier = modifier
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

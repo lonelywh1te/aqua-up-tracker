@@ -62,4 +62,6 @@
     <string name="water_reminder_notification_message13">Достаток воды = хорошее настроение.</string>
     <string name="water_reminder_notification_message14">Маленький ритуал для большого результата.</string>
     <string name="water_reminder_notification_message15">Начни с простого: сделай глоток.</string>
+    <string name="app_error_unknown_message">Произошла неизвестная ошибка</string>
+    <string name="database_error_sqlite_message">Внутренняя ошибка базы данных</string>
 </resources>

@@ -1,9 +1,14 @@
 package ru.lonelywh1te.aquaup.presentation.history
 
+import androidx.annotation.StringRes
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.WaterLog
 import ru.lonelywh1te.aquaup.domain.model.settings.WaterGoal
+import ru.lonelywh1te.aquaup.domain.result.AppError
+import ru.lonelywh1te.aquaup.presentation.home.HomeScreenState
 import ru.lonelywh1te.aquaup.presentation.ui.components.charts.barchart.BarChartEntry
+import ru.lonelywh1te.aquaup.presentation.ui.utils.asStringRes
+import java.io.IOException
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -44,5 +49,15 @@ sealed class HistoryScreenState {
 
     data object Loading: HistoryScreenState()
 
-    data class Error(val message: String): HistoryScreenState()
+    data class Error(
+        @StringRes val messageStringRes: Int,
+        val exceptionDetails: String? = null
+    ): HistoryScreenState() {
+        companion object {
+            val preview = HomeScreenState.Error(
+                messageStringRes = AppError.Unknown(IOException()).asStringRes(),
+                exceptionDetails = IOException().message
+            )
+        }
+    }
 }

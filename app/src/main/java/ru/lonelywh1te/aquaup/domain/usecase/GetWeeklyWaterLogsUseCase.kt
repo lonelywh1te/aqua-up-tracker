@@ -8,6 +8,8 @@ import ru.lonelywh1te.aquaup.domain.model.convertToUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.convertMlToOz
 import ru.lonelywh1te.aquaup.domain.repository.WaterLogRepository
+import ru.lonelywh1te.aquaup.domain.result.Result
+import ru.lonelywh1te.aquaup.domain.result.map
 import ru.lonelywh1te.aquaup.domain.storage.SettingsPreferences
 import java.time.LocalDate
 
@@ -15,17 +17,19 @@ class GetWeeklyWaterLogsUseCase(
     private val waterLogRepository: WaterLogRepository,
     private val settingsPreferences: SettingsPreferences,
 ) {
-    operator fun invoke(weekStart: LocalDate): Flow<Map<LocalDate, List<WaterLog>>> {
+    operator fun invoke(weekStart: LocalDate): Flow<Result<Map<LocalDate, List<WaterLog>>>> {
         val start = weekStart.atStartOfDay()
         val end = weekStart.plusDays(6).atStartOfDay()
 
         return combine(
             waterLogRepository.getWaterLogsForPeriod(start, end),
             settingsPreferences.volumeUnitFlow
-        ) { waterLogs, volumeUnit ->
-            waterLogs
-                .convertToUnit(volumeUnit)
-                .groupByDateWithEmptyDays(weekStart)
+        ) { waterLogsResult, volumeUnit ->
+            waterLogsResult.map { waterLogs ->
+                waterLogs
+                    .convertToUnit(volumeUnit)
+                    .groupByDateWithEmptyDays(weekStart)
+            }
         }
     }
 
