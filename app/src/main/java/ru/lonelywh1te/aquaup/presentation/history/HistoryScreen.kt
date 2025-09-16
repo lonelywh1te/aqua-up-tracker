@@ -2,7 +2,6 @@ package ru.lonelywh1te.aquaup.presentation.history
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -48,8 +46,6 @@ import ru.lonelywh1te.aquaup.R
 import ru.lonelywh1te.aquaup.domain.model.WaterLog
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.WaterGoal
-import ru.lonelywh1te.aquaup.presentation.home.HomeScreenEvent
-import ru.lonelywh1te.aquaup.presentation.home.HomeScreenState
 import ru.lonelywh1te.aquaup.presentation.ui.components.AppSection
 import ru.lonelywh1te.aquaup.presentation.ui.components.ValueListItem
 import ru.lonelywh1te.aquaup.presentation.ui.components.charts.barchart.BarChart
