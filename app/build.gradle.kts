@@ -73,6 +73,7 @@ dependencies {
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.junit.platform)
     testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.cororutines.test)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

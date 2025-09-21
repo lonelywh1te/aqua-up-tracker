@@ -26,7 +26,7 @@ class ExceptionReportingTreeTest {
     @ParameterizedTest
     @ValueSource(ints = [Log.ERROR, Log.WARN])
     fun `record exception if throwable is provided`(priority: Int) {
-        exceptionReportingTree.e(throwable)
+        exceptionReportingTree.log(priority, throwable)
 
         verify(exactly = 1) { crashlytics.recordException(throwable) }
     }
@@ -34,7 +34,7 @@ class ExceptionReportingTreeTest {
     @ParameterizedTest
     @ValueSource(ints = [Log.ERROR, Log.WARN])
     fun `log message if throwable is not provided`(priority: Int) {
-        exceptionReportingTree.e("message")
+        exceptionReportingTree.log(priority, "message")
 
         verify(exactly = 1) { crashlytics.log("message") }
     }

@@ -7,11 +7,14 @@ import ru.lonelywh1te.aquaup.domain.result.AppError
 import ru.lonelywh1te.aquaup.domain.result.DatabaseError
 import ru.lonelywh1te.aquaup.domain.result.Result
 import timber.log.Timber
+import kotlin.coroutines.cancellation.CancellationException
 
 suspend fun <T> dbRunCatchingWithResult(action: suspend () -> T): Result<T> {
     return try {
         Result.Success(action())
     } catch (e: Exception) {
+        if (e is CancellationException) throw e
+
         Timber.e(e)
 
         when (e) {
@@ -23,6 +26,8 @@ suspend fun <T> dbRunCatchingWithResult(action: suspend () -> T): Result<T> {
 
 fun <T> Flow<Result<T>>.asDbSafeFlow(): Flow<Result<T>> {
     return this.catch { e ->
+        if (e is CancellationException) throw e
+
         Timber.e(e)
 
         val result = when (e) {
