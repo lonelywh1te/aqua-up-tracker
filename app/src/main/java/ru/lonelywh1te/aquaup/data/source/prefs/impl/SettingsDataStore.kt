@@ -100,6 +100,5 @@ class SettingsDataStore(
 
     companion object {
         const val NAME = "settings"
-
     }
 }

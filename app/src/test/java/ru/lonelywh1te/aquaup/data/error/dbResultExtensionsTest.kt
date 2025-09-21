@@ -1,4 +1,4 @@
-package ru.lonelywh1te.aquaup.data
+package ru.lonelywh1te.aquaup.data.error
 
 import android.database.sqlite.SQLiteException
 import kotlinx.coroutines.CancellationException
@@ -8,15 +8,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import ru.lonelywh1te.aquaup.TestTimberTree
-import ru.lonelywh1te.aquaup.data.error.asDbSafeFlow
-import ru.lonelywh1te.aquaup.data.error.dbRunCatchingWithResult
 import ru.lonelywh1te.aquaup.domain.result.AppError
 import ru.lonelywh1te.aquaup.domain.result.DatabaseError
 import ru.lonelywh1te.aquaup.domain.result.Result
@@ -31,7 +28,7 @@ class dbResultExtensionsTest {
     @BeforeEach
     fun setUp() {
         testTree = TestTimberTree()
-        Timber.plant(testTree)
+        Timber.Forest.plant(testTree)
 
         sqliteException = SQLiteException()
         unknownException = Exception()
@@ -40,7 +37,7 @@ class dbResultExtensionsTest {
 
     @AfterEach
     fun tearDown() {
-        Timber.uproot(testTree)
+        Timber.Forest.uproot(testTree)
     }
 
     @Nested
@@ -51,8 +48,8 @@ class dbResultExtensionsTest {
             val expected = data
             val actual = dbRunCatchingWithResult { data }
 
-            assertTrue(actual is Result.Success)
-            assertEquals(expected, (actual as Result.Success).data)
+            Assertions.assertTrue(actual is Result.Success)
+            Assertions.assertEquals(expected, (actual as Result.Success).data)
         }
 
         @Test
@@ -66,25 +63,26 @@ class dbResultExtensionsTest {
         fun `log exception with Timber_e when action fails`() = runTest {
             dbRunCatchingWithResult { throw unknownException }
 
-            assertEquals(1, testTree.logs.size)
+            Assertions.assertEquals(1, testTree.logs.size)
         }
 
         @Test
-        fun `return Result_Failure with DatabaseError when action throws SQLiteException`() = runTest {
-            val expected = DatabaseError.SQLite(sqliteException)
-            val actual = dbRunCatchingWithResult { throw sqliteException }
+        fun `return Result_Failure with DatabaseError when action throws SQLiteException`() =
+            runTest {
+                val expected = DatabaseError.SQLite(sqliteException)
+                val actual = dbRunCatchingWithResult { throw sqliteException }
 
-            assertTrue { actual is Result.Failure }
-            assertEquals(expected, (actual as Result.Failure).error)
-        }
+                Assertions.assertTrue { actual is Result.Failure }
+                Assertions.assertEquals(expected, (actual as Result.Failure).error)
+            }
 
         @Test
         fun `return Result_Failure with AppError when action throws unknown exception`() = runTest {
             val expected = AppError.Unknown(unknownException)
             val actual = dbRunCatchingWithResult { throw unknownException }
 
-            assertTrue { actual is Result.Failure }
-            assertEquals(expected, (actual as Result.Failure).error)
+            Assertions.assertTrue { actual is Result.Failure }
+            Assertions.assertEquals(expected, (actual as Result.Failure).error)
         }
 
     }
@@ -102,8 +100,8 @@ class dbResultExtensionsTest {
 
             val actual = flow.first()
 
-            assertTrue(actual is Result.Success)
-            assertEquals(expected, (actual as Result.Success).data)
+            Assertions.assertTrue(actual is Result.Success)
+            Assertions.assertEquals(expected, (actual as Result.Success).data)
         }
 
         @Test
@@ -127,23 +125,24 @@ class dbResultExtensionsTest {
 
             flow.first()
 
-            assertEquals(1, testTree.logs.size)
+            Assertions.assertEquals(1, testTree.logs.size)
         }
 
         @Test
-        fun `return Result_Failure with DatabaseError when flow throws SQLiteException`() = runTest {
-            val expected = DatabaseError.SQLite(sqliteException)
+        fun `return Result_Failure with DatabaseError when flow throws SQLiteException`() =
+            runTest {
+                val expected = DatabaseError.SQLite(sqliteException)
 
-            val flow = flowOf(Unit)
-                .map { Result.Success(data) }
-                .onEach { throw sqliteException }
-                .asDbSafeFlow()
+                val flow = flowOf(Unit)
+                    .map { Result.Success(data) }
+                    .onEach { throw sqliteException }
+                    .asDbSafeFlow()
 
-            val actual = flow.first()
+                val actual = flow.first()
 
-            assertTrue { actual is Result.Failure }
-            assertEquals(expected, (actual as Result.Failure).error)
-        }
+                Assertions.assertTrue { actual is Result.Failure }
+                Assertions.assertEquals(expected, (actual as Result.Failure).error)
+            }
 
         @Test
         fun `return Result_Failure with AppError when flow throws unknown exception`() = runTest {
@@ -156,8 +155,8 @@ class dbResultExtensionsTest {
 
             val actual = flow.first()
 
-            assertTrue { actual is Result.Failure }
-            assertEquals(expected, (actual as Result.Failure).error)
+            Assertions.assertTrue { actual is Result.Failure }
+            Assertions.assertEquals(expected, (actual as Result.Failure).error)
         }
 
     }
