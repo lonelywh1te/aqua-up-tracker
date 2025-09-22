@@ -1,4 +1,4 @@
-package ru.lonelywh1te.aquaup
+package utils
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

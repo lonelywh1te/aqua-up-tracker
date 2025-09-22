@@ -1,6 +1,7 @@
 package ru.lonelywh1te.aquaup.data.source.db.converters
 
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -29,7 +30,7 @@ class LocalDateTimeConverterTest {
 
             val actual = converter.localDateTimeToLong(time)
 
-            Assertions.assertEquals(expected, actual)
+            assertEquals(expected, actual)
         }
 
     }
@@ -46,7 +47,7 @@ class LocalDateTimeConverterTest {
                     .toEpochMilli()
             )
 
-            Assertions.assertEquals(expected, actual)
+            assertEquals(expected, actual)
         }
     }
 

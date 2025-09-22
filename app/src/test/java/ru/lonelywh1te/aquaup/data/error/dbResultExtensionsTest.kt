@@ -9,11 +9,13 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import ru.lonelywh1te.aquaup.TestTimberTree
+import utils.TestTimberTree
 import ru.lonelywh1te.aquaup.domain.result.AppError
 import ru.lonelywh1te.aquaup.domain.result.DatabaseError
 import ru.lonelywh1te.aquaup.domain.result.Result
@@ -41,15 +43,15 @@ class dbResultExtensionsTest {
     }
 
     @Nested
-    inner class dbRunCatchingWithResultTest() {
+    inner class dbRunCatchingWithResult() {
 
         @Test
         fun `return Result_Success when action completes successfully`() = runTest {
             val expected = data
             val actual = dbRunCatchingWithResult { data }
 
-            Assertions.assertTrue(actual is Result.Success)
-            Assertions.assertEquals(expected, (actual as Result.Success).data)
+            assertTrue(actual is Result.Success)
+            assertEquals(expected, (actual as Result.Success).data)
         }
 
         @Test
@@ -88,7 +90,7 @@ class dbResultExtensionsTest {
     }
 
     @Nested
-    inner class asDbSafeFlowTest() {
+    inner class asDbSafeFlow() {
 
         @Test
         fun `return Result_Success when flow completes successfully`() = runTest {

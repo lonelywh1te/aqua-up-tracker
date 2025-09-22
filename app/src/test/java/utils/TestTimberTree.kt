@@ -1,4 +1,4 @@
-package ru.lonelywh1te.aquaup
+package utils
 
 import timber.log.Timber
 
