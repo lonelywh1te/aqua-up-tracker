@@ -2,6 +2,7 @@ package ru.lonelywh1te.aquaup.domain.usecase
 
 import kotlinx.coroutines.flow.first
 import ru.lonelywh1te.aquaup.domain.model.WaterLog
+import ru.lonelywh1te.aquaup.domain.model.convertUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.VolumeUnit
 import ru.lonelywh1te.aquaup.domain.model.settings.convertOzToMl
 import ru.lonelywh1te.aquaup.domain.repository.WaterLogRepository
@@ -16,13 +17,7 @@ class AddWaterUseCase(
         if (amount == 0) return
 
         val volumeUnit = settingsPreferences.volumeUnitFlow.first()
-        val waterLog = WaterLog(
-            amountMl = when (volumeUnit) {
-                VolumeUnit.Ml -> amount
-                VolumeUnit.Oz -> convertOzToMl(amount)
-            },
-            timestamp = LocalDateTime.now()
-        )
+        val waterLog = WaterLog(amountMl = amount).convertUnit(volumeUnit, VolumeUnit.Ml)
 
         waterLogRepository.addWaterLog(waterLog)
     }
