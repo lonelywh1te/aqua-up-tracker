@@ -13,7 +13,7 @@ object WaterLogTestFactory {
         id: Long = Random.nextLong(),
         amountMl: Int = Random.nextInt(0, 1001),
         timestamp: LocalDateTime = LocalDateTime.of(
-            LocalDate.of(Random.nextInt(1970, 2026), Random.nextInt(1, 13), Random.nextInt(1, 32)),
+            LocalDate.of(Random.nextInt(1970, 2026), Random.nextInt(1, 13), Random.nextInt(1, 29)),
             LocalTime.of(Random.nextInt(24), Random.nextInt(60))
         )
     ): WaterLog {

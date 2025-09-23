@@ -12,7 +12,7 @@ object WaterLogEntityTestFactory {
         id: Long = Random(seed).nextLong(),
         amountMl: Int = Random(seed).nextInt(0, 1001),
         timestamp: LocalDateTime = LocalDateTime.of(
-            LocalDate.of(Random(seed).nextInt(1970, 2026), Random(seed).nextInt(1, 13), Random(seed).nextInt(1, 32)),
+            LocalDate.of(Random(seed).nextInt(1970, 2026), Random(seed).nextInt(1, 13), Random(seed).nextInt(1, 29)),
             LocalTime.of(Random(seed).nextInt(24), Random(seed).nextInt(60))
         )
     ): WaterLogEntity {
