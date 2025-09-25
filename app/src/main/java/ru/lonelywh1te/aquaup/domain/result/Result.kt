@@ -1,7 +1,5 @@
 package ru.lonelywh1te.aquaup.domain.result
 
-import ru.lonelywh1te.aquaup.domain.result.Result
-
 sealed class Result<out T> {
     data class Success<out T>(val data: T): Result<T>()
     data object Loading: Result<Nothing>()

@@ -26,8 +26,7 @@ val domainModule = module {
 
     factory<GetTodayWaterLogsUseCase> {
         GetTodayWaterLogsUseCase(
-            settingsPreferences = get(),
-            waterLogRepository = get()
+            getWaterLogsByDateUseCase = get()
         )
     }
 
