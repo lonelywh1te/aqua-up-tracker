@@ -10,17 +10,17 @@ import kotlin.random.Random
 object WaterLogTestFactory {
     fun create(
         seed: Int,
-        id: Long = Random.nextLong(),
-        amountMl: Int = Random.nextInt(0, 1001),
+        id: Long = Random(seed).nextLong(),
+        amountMl: Int = Random(seed).nextInt(0, 1001),
         timestamp: LocalDateTime = LocalDateTime.of(
-            LocalDate.of(Random.nextInt(1970, 2026), Random.nextInt(1, 13), Random.nextInt(1, 29)),
-            LocalTime.of(Random.nextInt(24), Random.nextInt(60))
+            LocalDate.of(Random(seed).nextInt(1970, 2026), Random(seed).nextInt(1, 13), Random(seed).nextInt(1, 29)),
+            LocalTime.of(Random(seed).nextInt(24), Random(seed).nextInt(60))
         )
     ): WaterLog {
         return WaterLog(id, amountMl, timestamp)
     }
 
     fun createList(seed: Int, count: Int): List<WaterLog> {
-        return List(count) { create(seed) }
+        return List(count) { create(seed + it) }
     }
 }
