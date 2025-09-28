@@ -1,6 +1,5 @@
 package ru.lonelywh1te.aquaup.presentation.settings
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -49,14 +48,6 @@ class SettingsViewModel(
                 is SettingsScreenEvent.WaterGoalChanged -> {
                     settingsPreferences.setWaterGoal(event.value)
                 }
-            }
-        }
-    }
-
-    init {
-        viewModelScope.launch {
-            state.collect { state ->
-                Log.d("SettingsViewModel", state.toString())
             }
         }
     }

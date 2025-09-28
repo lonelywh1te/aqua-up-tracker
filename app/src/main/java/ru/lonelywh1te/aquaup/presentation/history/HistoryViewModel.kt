@@ -1,6 +1,5 @@
 package ru.lonelywh1te.aquaup.presentation.history
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -61,7 +60,7 @@ class HistoryViewModel(
         }.handle(
             onSuccess = { it },
             onLoading = { HistoryScreenState.Loading },
-            onFailure = { HistoryScreenState.Error(it.asStringRes(), it.e.message) }
+            onFailure = { HistoryScreenState.Error(it.asStringRes(), it.e.toString()) }
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), HistoryScreenState.Loading)
 
